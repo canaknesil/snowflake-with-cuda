@@ -2,7 +2,7 @@
 #include <math.h>
 #include <cstdlib>
 
-// function to add the elements of two arrays
+// CPU kernel
 void addCPU(int n, float *x, float *y)
 {
   for (int i = 0; i < n; i++)
@@ -10,6 +10,7 @@ void addCPU(int n, float *x, float *y)
 }
 
 
+// GPU kernel with 1 block and 1 thread per block
 __global__
 void addGPU_1_1(int n, float *x, float *y)
 {
@@ -19,6 +20,7 @@ void addGPU_1_1(int n, float *x, float *y)
 }
 
 
+// GPU kernel with N block and 1 thread per block
 __global__
 void addGPU_N_1(int n, float *x, float *y)
 {
@@ -36,6 +38,8 @@ void addGPU_N_1(int n, float *x, float *y)
 }
 
 
+
+// GPU kernel with 1 block and N thread per block
 __global__
 void addGPU_1_N(int n, float *x, float *y)
 {
@@ -62,7 +66,7 @@ void addInterval(int start, int end, float *x, float *y)
   }
 }
 
-
+// GPU kernel with N block and N thread per block (N's may not be equal)
 __global__
 void addGPU_N_N(int n, float *x, float *y)
 {
