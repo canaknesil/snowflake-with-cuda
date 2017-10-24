@@ -9,7 +9,7 @@ void stencilKernel (int arrSize, float *in, float *out, int wArrSize, float *wAr
     int midIndex = blockDim.x * blockIdx.x + threadIdx.x;
     int radius = wArrSize / 2;
     
-    int result = 0;
+    float result = 0;
     for (int i = -1 * radius; i <= radius; i++)
     {
         int arrIndex = midIndex + i;
