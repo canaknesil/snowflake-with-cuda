@@ -48,8 +48,8 @@ void stencilKernelShared (float *in, float *out, int arrSize, float *wArr, int w
     if (blockDim.x - 2 * radius >= wArrSize)
     {
         int startId = radius;
-        if (threadIdx.x >= startID && threadIdx.x < startID + wArrSize) 
-                sh_wArr[threadIdx.x - startID] = wArr[threadIdx.x - startID];
+        if (threadIdx.x >= startId && threadIdx.x < startId + wArrSize) 
+                sh_wArr[threadIdx.x - startId] = wArr[threadIdx.x - startId];
         wArrPtr = sh_wArr;
     }
     else
@@ -137,7 +137,7 @@ int main()
     for (int i=0; i<wArrSize; i++) wArr[i] = (float) 1 / wArrSize;
     
 	// apply stencil
-	void applyStencil(in, out, arrSize, wArr, wArrSize);
+	applyStencil(in, out, arrSize, wArr, wArrSize);
 
 	// display a portion of output
     for (int i=0; i<10; i++) std::cout << out[i] << " ";
