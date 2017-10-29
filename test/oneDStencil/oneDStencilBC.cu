@@ -13,6 +13,8 @@ out: device array for output data including boundary unchanged
 arraySize: size of in and out
 wArr: weight array
 wArrSize: size of wArr
+
+NOTE: Size of the data part of in and out (without boundaries) is a multiple of block dimention (number of thread per block)
 */
 __global__
 void stencilKernelShared (float *in, float *out, int arrSize, float *wArr, int wArrSize)
@@ -40,8 +42,8 @@ void stencilKernelShared (float *in, float *out, int arrSize, float *wArr, int w
     if (threadIdx.x >= blockDim.x - radius) sh_in[threadIdx.x + radius] = in[midIndex + radius]; // right
     
     // copy boundaries unchanged to out
-    if (midIndex < radius) out[midIndex - radius] = sh_in[threadIdx.x - radius]; // left
-    if (midIndex >= blockDim.x - radius) out[midIndex + radius] = sh_in[threadIdx.x + radius]; // right
+    //if (midIndex < radius) out[midIndex - radius] = sh_in[threadIdx.x - radius]; // left
+    //if (midIndex >= blockDim.x - radius) out[midIndex + radius] = sh_in[threadIdx.x + radius]; // right
 
     // cache weight array to shared memory if nescessary
     float *wArrPtr;
@@ -82,14 +84,21 @@ wArrSize: weight array size
 */
 void applyStencil(float *in, float *out, int arrSize, float *wArr, int wArrSize)
 {
+    int nThread = 128; // number of thread per block
+
+    int radius = wArrSize / 2;
+    int dataSize = arrSize - 2 * radius; // without boundary
+    int extArrSize; // extented array size where dataSize is a multiple of nThread
+    {
+        int rest = dataSize % nThread;
+        extArrSize = (rest == 0 ? arrSize : arrSize + nThread - rest);
+    }
+
 	// declare and allocate device arrays
 	float *d_in, *d_out, *d_wArr;
 
-	int radius = wArrSize / 2;
-	int dataSize = arrSize - 2 * radius; // without boundary
-
-    cudaMalloc(&d_in, arrSize * sizeof(float));
-    cudaMalloc(&d_out, arrSize * sizeof(float));
+    cudaMalloc(&d_in, extArrSize * sizeof(float));
+    cudaMalloc(&d_out, extArrSize * sizeof(float));
     cudaMalloc(&d_wArr, wArrSize * sizeof(float));
 
 	// copy initial data from host to device
@@ -97,14 +106,20 @@ void applyStencil(float *in, float *out, int arrSize, float *wArr, int wArrSize)
 	cudaMemcpy(d_wArr, wArr, wArrSize * sizeof(float), cudaMemcpyHostToDevice);
 
 	// apply CUDA stencil kernel
-    int nThread = 128;
 	int sharedMemSize = (wArrSize + nThread + 2 * radius) * sizeof(float);
 	
-	stencilKernelShared <<< (dataSize + nThread - 1) / nThread, nThread, sharedMemSize >>> 
-			(d_in, d_out, arrSize, d_wArr, wArrSize);
+	stencilKernelShared <<< (extArrSize - 2 * radius) / nThread, nThread, sharedMemSize >>> 
+			(d_in, d_out, extArrSize, d_wArr, wArrSize);
 
 	// copy output data from device to host
-	cudaMemcpy(out, d_out, arrSize * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(out, d_out, arrSize * sizeof(float), cudaMemcpyDeviceToHost);
+    
+    // copy boundaries unchanged to out
+    for (int i=0; i<radius; i++) 
+    {
+        out[i] = in[i];
+        out[i + radius + dataSize] = in[i + radius + dataSize];
+    }
 	
 	// deallocate device arrays
 	cudaFree(d_in);
@@ -140,8 +155,8 @@ int main()
 	applyStencil(in, out, arrSize, wArr, wArrSize);
 
 	// display a portion of output
-    for (int i=0; i<10; i++) std::cout << out[i] << " ";
-    std::cout << std::endl;
+    for (int i=0; i<20; i++) std::cout << i << ": " << out[i] << std::endl;
+    for (int i=arrSize-20; i<arrSize; i++) std::cout << i << ": " << out[i] << std::endl;
 
     // deallocate arrays
     free(in);
