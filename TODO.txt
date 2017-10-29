@@ -1,2 +1,1 @@
-Debug boundary conditions with negative indeces.
 Implement stencils for any number of dimention.

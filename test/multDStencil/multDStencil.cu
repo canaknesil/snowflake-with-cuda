@@ -128,21 +128,39 @@ void applyStencil(float *in, float *out, int arrSize, float *wArr, int wArrSize)
 }
 
 
+#define DIM 2
+
 int main()
 {
-	// declare and allocate input, output, and weight arrays
-    int dataSize = 1000000;
-    int wArrSize = 15;
+    // declare and allocate input, output, and weight arrays
+    int dataSize[] = {5, 5};
+    int wArrSize[] = {3, 3};
     
-	int radius = wArrSize / 2;
-	int arrSize = dataSize + 2 * radius;
+    int radius[DIM];
+    for(int i=0 i<DIM; i++) radius[i] = wArrSize[i] / 2;
 
-    float *in = (float *) malloc(arrSize * sizeof(float));
-    float *out = (float *) malloc(arrSize * sizeof(float));
-    float *wArr = (float *) malloc(wArrSize * sizeof(float));
+    int arrSize[DIM];
+    for (int i=0; i<DIM; i++) arrSize[i] = dataSize[i] + 2 * radius[i];
+
+
+    int arrAllocSize = 1;
+    int wArrAllocSize = 1;
+    for (int i=0; i<DIM; i++) 
+    {
+        arrAllocSize *= arrSize[i];
+        wArrAllocSize *= wArrSize[i];
+    }
+    
+    float *in = (float *) malloc(arrAllocSize * sizeof(float));
+    float *out = (float *) malloc(arrAllocSize * sizeof(float));
+    float *wArr = (float *) malloc(wArrAllocSize * sizeof(float));
 
     // initialize input
-	for (int i=0; i<dataSize; i++) in[i + radius] = (i % 2) + 1; // data
+    
+
+
+    
+	for (int i=0; i<arrAllocSize; i++) () in[i + radius] = (i % 2) + 1; // data
 	for (int i=0; i<radius; i++) in[i] = in[i + dataSize + radius] = 0; // boundary
 
 	// initialize output
@@ -162,7 +180,7 @@ int main()
     free(in);
     free(out);
     free(wArr);
-
+    */
     return 0;
 }
 
