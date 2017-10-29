@@ -28,5 +28,7 @@ private:
 
 };
 
+#include "MDArrayHelper.cut"
+
 
 #endif

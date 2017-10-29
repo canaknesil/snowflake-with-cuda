@@ -16,18 +16,19 @@ int main()
 
     int dim = 2;
     int dimSize[] = {3, 3};
+    int linSize = 9;
 
     MDArrayHelper<int> arr(orjArr, dim, dimSize);
 
-    for (int i=0; i<dim; i++) 
+    for (int i=0; i<dimSize[1]; i++) 
     {
         int index[] = {1, i};
         arr.set(0, index);
     }
 
-    printArr(orjArr, 9);
+    printArr(orjArr, linSize);
 
-    for (int i=0; i<dim; i++) 
+    for (int i=0; i<dimSize[1]; i++) 
     {
         int index[] = {0, i};
         std::cout << arr.get(index) << " ";
@@ -37,7 +38,7 @@ int main()
     int index[] = {1, 0};
     arr.reposition(index);
 
-    for (int i=0; i<dim; i++) 
+    for (int i=0; i<dimSize[1]; i++) 
     {
         int index[] = {0, i};
         std::cout << arr.get(index) << " ";
