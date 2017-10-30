@@ -4,6 +4,13 @@
 #define _CCM_ __host__ __device__ // CUDA Callable Member
 
 
+/*
+Takes a pointer to a pre allocated contiguous array along with its dimention information.
+And facilitates to make references to the array.
+
+Must be used with nvcc compiler.
+Can be used in both host and device code.
+*/
 
 template <class T> class MDArrayHelper
 {
@@ -28,7 +35,7 @@ private:
 
 };
 
-#include "MDArrayHelper.cut"
+#include "MDArrayHelper.cut" // implementation
 
 
 #endif
