@@ -47,6 +47,7 @@ int MDArrayHelper<T>::getLinIndex(int *index)
 template <class T>
 void MDArrayHelper<T>::getCoords(int *index, int linIndex)
 {
+    linIndex -= data - dataOrigin; // apply reposioning
     for (int i=0; i<dim; i++)
     {
         index[i] = linIndex / dimCoef[i];
@@ -74,3 +75,4 @@ void MDArrayHelper<T>::reposition(int *index)
 {
     data = dataOrigin + getLinIndex(index);
 }
+

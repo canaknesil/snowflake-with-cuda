@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "MDArrayHelper.h"
 
+using namespace std;
 
 
 /*
@@ -83,8 +84,12 @@ arrSize: input and output array sizes
 wArr: weight array
 wArrSize: weight array size
 */
-void applyStencil(float *in, float *out, int arrSize, float *wArr, int wArrSize)
+void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSize, int dim)
 {
+
+
+
+    /*
     int nThread = 128; // number of thread per block
 
     int radius = wArrSize / 2;
@@ -126,75 +131,120 @@ void applyStencil(float *in, float *out, int arrSize, float *wArr, int wArrSize)
 	cudaFree(d_in);
     cudaFree(d_out);
     cudaFree(d_wArr);
+    */
 }
 
 
-#define DIM 2
 
-int main()
+void print2D(float *arr, int *size)
+{
+    for (int i=0; i<size[0]; i++) 
+    {
+        for (int j=0; j<size[1]; j++) cout << arr[i * size[0] + j] << " ";
+        cout << endl;
+    }
+}
+
+void test2D()
 {
     // declare and allocate input, output, and weight arrays
+    int dim = 2;
     int dataSize[] = {5, 5};
     int wArrSize[] = {3, 3};
     
-    int radius[DIM];
-    for(int i=0 i<DIM; i++) radius[i] = wArrSize[i] / 2;
+    int *radius = (int *) alloca(dim);
+    for(int i=0; i<dim; i++) radius[i] = wArrSize[i] / 2;
 
-    int arrSize[DIM];
-    for (int i=0; i<DIM; i++) arrSize[i] = dataSize[i] + 2 * radius[i];
+    int *arrSize = (int *) alloca(dim);
+    for (int i=0; i<dim; i++) arrSize[i] = dataSize[i] + 2 * radius[i];
 
 
     int arrLinSize = 1;
     int wArrLinSize = 1;
-    for (int i=0; i<DIM; i++) 
+    for (int i=0; i<dim; i++) 
     {
         arrLinSize *= arrSize[i];
         wArrLinSize *= wArrSize[i];
     }
-    
-    float *in = (float *) malloc(arrLinSize * sizeof(float));
-    float *out = (float *) malloc(arrLinSize * sizeof(float));
-    float *wArr = (float *) malloc(wArrLinSize * sizeof(float));
+
+    float *in = new float[arrLinSize];
+    float *out = new float[arrLinSize];
+    float *wArr = new float[wArrLinSize];
 
     // initialize helpers
-    MDArrayHelper<float> inHelper(in, DIM, arrSize);
-    MDArrayHelper<float> outHelper(out, DIM, arrSize);
-    MDArrayHelper<float> wHelper(wArr, DIM, wArrSize);
+    MDArrayHelper<float> inHelper(in, dim, arrSize);
+    MDArrayHelper<float> outHelper(out, dim, arrSize);
+    MDArrayHelper<float> wHelper(wArr, dim, wArrSize);
 
     // reposision in and out helpers
     inHelper.reposition(radius);
     outHelper.reposition(radius);
 
-    // initialize input
-    for (int linI = 0; i<arrLinSize; i++)
+    // initialize input array
+    int *index = new int[dim];
+
+    for (int linI = 0; linI<arrLinSize; linI++)
     {
-        int index[DIM];
-        
+        int *index = (int *) alloca(dim);
+        inHelper.getCoords(index, linI);
+
+        bool pred = true; // data: true, boundary: false
+        for (int i=0; i<dim; i++) if (index[i] < 0 || index[i] >= dataSize[i]) pred = false;
+
+        if (pred)
+        {   // data
+            int totIndex = 0;
+            for (int i=0; i<dim; i++) totIndex += index[i];
+            inHelper.set((totIndex % 2) + 1, index);
+        }
+        else
+        {   //boundary
+            inHelper.set(0, index);
+        }
     }
 
-
-    
-	for (int i=0; i<arrAllocSize; i++) () in[i + radius] = (i % 2) + 1; // data
-	for (int i=0; i<radius; i++) in[i] = in[i + dataSize + radius] = 0; // boundary
+    cout << "Input: " << endl;
+    print2D(in, arrSize);
+    cout << endl;
 
 	// initialize output
-	for (int i=0; i<arrSize; i++) out[i] = 0;
+    for (int linI=0; linI<arrLinSize; linI++) 
+    {
+        int *index = (int *) alloca(dim);
+        outHelper.getCoords(index, linI);
+
+        outHelper.set(0, index);
+    }
 	
 	// initialize weight array
-    for (int i=0; i<wArrSize; i++) wArr[i] = (float) 1 / wArrSize;
+    for (int linI=0; linI<wArrLinSize; linI++) 
+    {
+        int *index = (int *) alloca(dim);
+        wHelper.getCoords(index, linI);
+
+        wHelper.set((float) 1 / wArrLinSize, index);
+    }
+
+    cout << "Weight Array: " << endl;
+    print2D(wArr, wArrSize);
+    cout << endl;
     
 	// apply stencil
-	applyStencil(in, out, arrSize, wArr, wArrSize);
+	applyStencil(in, out, arrSize, wArr, wArrSize, dim);
 
-	// display a portion of output
-    for (int i=0; i<20; i++) std::cout << i << ": " << out[i] << std::endl;
-    for (int i=arrSize-20; i<arrSize; i++) std::cout << i << ": " << out[i] << std::endl;
+	cout << "Output: " << endl;
+    print2D(out, arrSize);
+    cout << endl;
 
     // deallocate arrays
-    free(in);
-    free(out);
-    free(wArr);
-    
-    return 0;
+    delete[] in;
+    delete[] out;
+    delete[] wArr;
 }
 
+
+int main()
+{
+    test2D();
+    return 0;
+}

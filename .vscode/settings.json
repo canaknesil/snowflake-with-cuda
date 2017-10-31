@@ -1,9 +1,12 @@
 {
     "files.associations": {
         "*.cu": "cpp",
+        "*.h": "cpp",
+        "*.cut": "cpp",
         "xiosbase": "cpp",
         "xlocale": "cpp",
         "xstring": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "iostream": "cpp"
     }
 }

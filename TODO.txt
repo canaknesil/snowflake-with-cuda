@@ -1,2 +1,2 @@
-Test using shared memory in automatic mode.
+Fill shared memory by randomly chosen threads. or serially chosen
 Implement stencils for any number of dimention.
