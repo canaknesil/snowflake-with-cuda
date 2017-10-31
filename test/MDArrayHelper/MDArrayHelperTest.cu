@@ -10,9 +10,7 @@ void printArr(int *arr, int size)
 
 void testOnHost()
 {
-    int orjArr[] = {1, 2, 3,
-                    4, 5, 6,
-                    7, 8, 9};
+    int orjArr[9];
 
     int dim = 2;
     int dimSize[] = {3, 3};

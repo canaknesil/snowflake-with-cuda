@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include "MDArrayHelper.h"
 
 
 
@@ -143,20 +144,33 @@ int main()
     for (int i=0; i<DIM; i++) arrSize[i] = dataSize[i] + 2 * radius[i];
 
 
-    int arrAllocSize = 1;
-    int wArrAllocSize = 1;
+    int arrLinSize = 1;
+    int wArrLinSize = 1;
     for (int i=0; i<DIM; i++) 
     {
-        arrAllocSize *= arrSize[i];
-        wArrAllocSize *= wArrSize[i];
+        arrLinSize *= arrSize[i];
+        wArrLinSize *= wArrSize[i];
     }
     
-    float *in = (float *) malloc(arrAllocSize * sizeof(float));
-    float *out = (float *) malloc(arrAllocSize * sizeof(float));
-    float *wArr = (float *) malloc(wArrAllocSize * sizeof(float));
+    float *in = (float *) malloc(arrLinSize * sizeof(float));
+    float *out = (float *) malloc(arrLinSize * sizeof(float));
+    float *wArr = (float *) malloc(wArrLinSize * sizeof(float));
+
+    // initialize helpers
+    MDArrayHelper<float> inHelper(in, DIM, arrSize);
+    MDArrayHelper<float> outHelper(out, DIM, arrSize);
+    MDArrayHelper<float> wHelper(wArr, DIM, wArrSize);
+
+    // reposision in and out helpers
+    inHelper.reposition(radius);
+    outHelper.reposition(radius);
 
     // initialize input
-    
+    for (int linI = 0; i<arrLinSize; i++)
+    {
+        int index[DIM];
+        
+    }
 
 
     
@@ -180,7 +194,7 @@ int main()
     free(in);
     free(out);
     free(wArr);
-    */
+    
     return 0;
 }
 

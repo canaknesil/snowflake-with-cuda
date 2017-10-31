@@ -23,6 +23,9 @@ public:
 
     _CCM_ void reposition(int *index);
 
+    _CCM_ int getLinIndex(int *index);
+    _CCM_ void getCoords(int *index, int linIndex);
+
 private:
     T *data;
     T *dataOrigin;
@@ -30,7 +33,6 @@ private:
     int *dimSize;
     int *dimCoef;
 
-    _CCM_ int getLinIndex(int *index);
     _CCM_ void calcDimCoef(const int *dimSize, int *dimCoef, int dim);
 
 };

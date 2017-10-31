@@ -1,1 +1,2 @@
+Test using shared memory in automatic mode.
 Implement stencils for any number of dimention.
