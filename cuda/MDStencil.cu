@@ -2,26 +2,30 @@
 #include <cstdlib>
 #include <cmath>
 #include "MDArrayHelper.h"
+#include "MDUtils.h"
 
 using namespace std;
 
+/*
+Note: The kernel may need shared memory optimization
+*/
 
 /*
-GPU kernel to perform 1 dim stencil 
+GPU kernel to perform dim dimentional stencil 
 on a data including boundary data
-using shared memory
 
-in: device array for input data including boundary
-out: device array for output data including boundary unchanged
-arraySize: size of in and out
+in: input array for input data including boundary
+out: output array for output data including boundary unchanged
+arraySize: size of in and out for each dimention
 wArr: weight array
-wArrSize: size of wArr
+wArrSize: size of wArr for each dimention
 
-NOTE: Size of the data part of in and out (without boundaries) is a multiple of block dimention (number of thread per block)
+NOTE: Size of the data part of in and out (without boundaries) is a multiple of block side (number of thread per block)^(1/dim)
 */
 __global__
-void stencilKernelShared (float *in, float *out, int arrSize, float *wArr, int wArrSize)
+void stencilKernelShared (float *in, float *out, int *arrSize, float *wArr, int *wArrSize, int dim)
 {
+    /*
 	// create index related local variables
     int midIndex = blockDim.x * blockIdx.x + threadIdx.x;
     int radius = wArrSize / 2;
@@ -77,6 +81,7 @@ void stencilKernelShared (float *in, float *out, int arrSize, float *wArr, int w
     
     // write output
     out[midIndex] = result;
+    */
 }
 
 /*
@@ -127,21 +132,44 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
     cudaMemcpy(d_in, in, arrLinSize * sizeof(float), cudaMemcpyHostToDevice);
 	cudaMemcpy(d_wArr, wArr, wArrLinSize * sizeof(float), cudaMemcpyHostToDevice);
 
-	// apply CUDA stencil kernel
-	/*int sharedMemSize = (wArrSize + nThread + 2 * radius) * sizeof(float);
-	
-	stencilKernelShared <<< (extArrSize - 2 * radius) / nThread, nThread, sharedMemSize >>> 
-			(d_in, d_out, extArrSize, d_wArr, wArrSize);*/
+    // apply CUDA stencil kernel	
+    int *blockNPerDim = (int *) alloca(dim);
+    for (int i=0; i<dim; i++) blockNPerDim[i] = (extArrSize[i] - 2 * radius[i]) / blockSide;
+
+    int nBlock = 1;
+    for (int i=0; i<dim; i++) nBlock *= blockNPerDim[i];
+
+	stencilKernelShared <<< nBlock, nThread >>> 
+			(d_in, d_out, extArrSize, d_wArr, wArrSize, dim);
 
 	// copy output data from device to host
     cudaMemcpy(out, d_out, arrLinSize * sizeof(float), cudaMemcpyDeviceToHost);
     
     // copy boundaries unchanged to out
-    /*for (int i=0; i<radius; i++) 
+    // Note: This part needs optimization, this version iterates the entire data.
+    MDArrayHelper<float> outHelper(out, dim, arrSize);
+    MDArrayHelper<float> inHelper(in, dim, arrSize);
+
+    int *i = (int *) alloca(dim);
+    int *start = (int *) alloca(dim);
+    int *end = (int *) alloca(dim);
+
+    for (int i=0; i<dim; i++) 
     {
-        out[i] = in[i];
-        out[i + radius + dataSize] = in[i + radius + dataSize];
-    }*/
+        start[i] = 0;
+        end[i] = arrSize[i];
+    }
+
+    MDForHost(dim, i, start, end, [&] ()
+    {
+        bool pred = false; // boundary: true
+        for (int a=0; a<dim; a++) if (i[a] < radius[a] || i[a] >= radius[a] + dataSize[a]) pred = true;
+
+        if (pred)
+        {
+            outHelper.set(inHelper.get(i), i);
+        }
+    });
 	
 	// deallocate device arrays
 	cudaFree(d_in);
@@ -214,7 +242,7 @@ void test2D()
         }
         else
         {   //boundary
-            inHelper.set(0, index);
+            inHelper.set(5, index);
         }
     }
 

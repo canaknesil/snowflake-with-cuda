@@ -6,7 +6,23 @@ using namespace std;
 
 #define DIM 3
 
-/*
+
+__device__
+void MDForDevice(int dim, int *i, int *start, int *end, void (*body)(void **args), void **args)
+{
+    if (dim == 0) 
+    {
+        body(args);
+        return;
+    }
+
+    for (i[0] = start[0]; i[0] < end[0]; i[0]++)
+    {
+        MDForDevice(dim - 1, i + 1, start + 1, end + 1, body, args);
+    }
+}
+
+
 __global__
 void testKernel(int *out)
 {
@@ -16,28 +32,33 @@ void testKernel(int *out)
 
     int count = 0;
 
-    auto body = [&] ()
+    void *args[3];
+    args[0] = &i;
+    args[1] = &out;
+    args[2] = &count;
+
+    auto body = [] (void **args)
     {
-        for (int a=0; a<DIM; a++) out[count++] = i[a];
+        int **i = (int **) args[0];
+        int **out = (int **) args[1];
+        int *count = (int *) args[2];
+
+        for (int a=0; a<DIM; a++) (*out)[*count++] = (*i)[a];
     };
 
-    auto bodyThunk = [] (void * arg)
-    {
-        (*static_cast<decltype(body)*> (arg)) ();
-    };
-
-    MDForDevice(DIM, i, start, end, bodyThunk, &body);
+    MDForDevice(DIM, i, start, end, body, args);
 }
+
 
 
 void testDevice()
 {
     int out[81];
+    
     int *d_out;
+
     cudaMalloc(&d_out, 81 * sizeof(int));
-
     testKernel <<<1, 1>>> (d_out);
-
     cudaMemcpy(out, d_out, 81 * sizeof(int), cudaMemcpyDeviceToHost);
 
     for (int i=0; i<27; i++) 
@@ -46,7 +67,7 @@ void testDevice()
         cout << endl;
     } 
 }
-*/
+
 
 void testHost()
 {
