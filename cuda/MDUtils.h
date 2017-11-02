@@ -6,7 +6,8 @@
 #include <functional>
 
 
-_CCM_ void MDFor(int dim, int *i, int *start, int *end, std::function<void ()> body);
+__host__ void MDForHost(int dim, int *i, int *start, int *end, std::function<void ()> body);
+
 
 
 #endif

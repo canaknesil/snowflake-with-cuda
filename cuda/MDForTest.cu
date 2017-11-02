@@ -6,7 +6,7 @@ using namespace std;
 
 #define DIM 3
 
-
+/*
 __global__
 void testKernel(int *out)
 {
@@ -16,10 +16,17 @@ void testKernel(int *out)
 
     int count = 0;
 
-    MDFor(DIM, i, start, end, [&] ()
+    auto body = [&] ()
     {
         for (int a=0; a<DIM; a++) out[count++] = i[a];
-    });
+    };
+
+    auto bodyThunk = [] (void * arg)
+    {
+        (*static_cast<decltype(body)*> (arg)) ();
+    };
+
+    MDForDevice(DIM, i, start, end, bodyThunk, &body);
 }
 
 
@@ -29,7 +36,7 @@ void testDevice()
     int *d_out;
     cudaMalloc(&d_out, 81 * sizeof(int));
 
-    testKernel <<1, 1>> (d_out);
+    testKernel <<<1, 1>>> (d_out);
 
     cudaMemcpy(out, d_out, 81 * sizeof(int), cudaMemcpyDeviceToHost);
 
@@ -39,7 +46,7 @@ void testDevice()
         cout << endl;
     } 
 }
-
+*/
 
 void testHost()
 {
@@ -47,7 +54,7 @@ void testHost()
     int start[] = {2, 2, 2};
     int end[] = {5, 5, 5};
 
-    MDFor(DIM, i, start, end, [&] ()
+    MDForHost(DIM, i, start, end, [&] ()
     {
         for (int a=0; a<DIM; a++) cout << i[a] << " ";
         cout << endl;
@@ -58,7 +65,7 @@ void testHost()
 int main()
 {
     testHost();
-    testDevice();
+    //testDevice();
     
     return 0;
 }
