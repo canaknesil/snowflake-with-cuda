@@ -7,7 +7,7 @@
 
 
 __host__ void MDForHost(int dim, int *i, int *start, int *end, std::function<void ()> body);
-//__device__ void MDForDevice(int dim, int *i, int *start, int *end, void (*body)(void **args), void **args);
+//__device__ void MDForDevice(int dim, int *i, int *start, int *end, void (*body)());
 
 
 

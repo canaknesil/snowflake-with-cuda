@@ -6,6 +6,23 @@
 
 using namespace std;
 
+
+
+__device__ void MDForDevice(int dim, int *i, int *start, int *end, void (*body)())
+{
+    if (dim == 0) 
+    {
+        body();
+        return;
+    }
+
+    for (i[0] = start[0]; i[0] < end[0]; i[0]++)
+    {
+        MDForDevice(dim - 1, i + 1, start + 1, end + 1, body);
+    }
+}
+
+
 /*
 Note: The kernel may need shared memory optimization
 */
@@ -23,55 +40,72 @@ wArrSize: size of wArr for each dimention
 NOTE: Size of the data part of in and out (without boundaries) is a multiple of block side (number of thread per block)^(1/dim)
 */
 __global__
-void stencilKernelShared (float *in, float *out, int *arrSize, float *wArr, int *wArrSize, int dim)
+void stencilKernel (float *in, float *out, int *arrSize, float *wArr, int *wArrSize, int dim, int blockSide)
 {
+    // create index related local variables
+    int *blockSize = new int[dim];
+    for (int i=0; i<dim; i++) blockSize[i] = blockSide;
+
+    int *radius = new int[dim];
+    for (int i=0; i<dim; i++) radius[i] = wArrSize[i] / 2;
+
+    int *dataSize = new int[dim];
+    for (int i=0; i<dim; i++) dataSize[i] = arrSize[i] - 2 * radius[i];
+
+    int *gridSize = new int[dim];
+    for (int i=0; i<dim; i++) gridSize[i] = dataSize[i] / blockSide;
+    
+    MDArrayHelper<char> threadH(0, dim, blockSize);
+    MDArrayHelper<char> blockH(0, dim, gridSize);
+    
+    int *threadIndex = new int[dim];
+    threadH.getCoords(threadIndex, threadIdx.x);
+
+    int *blockIndex = new int[dim];
+    blockH.getCoords(blockIndex, blockIdx.x);
+
+    // initilize helpers for data
+    MDArrayHelper<float> inH(in, dim, arrSize);
+    MDArrayHelper<float> outH(out, dim, arrSize);
+    MDArrayHelper<float> wArrH(wArr, dim, wArrSize);
+
+    // reposition helpers
+    int *newPosition = new int[dim];
+    for (int i=0; i<dim; i++) newPosition[i] = blockIndex[i] * blockSide + radius[i];
+
+    inH.reposition(newPosition);
+    outH.reposition(newPosition);
+    wArrH.reposition(radius);
+
+    delete[] newPosition;
+    
+    // calculate output
+    int *index = new int[dim];
+    int *start = new int[dim];
+    int *end = new int[dim];
+
+    for (int i=0; i<dim; i++)
+    {
+        start[i] = 0;
+        end[i] = blockSide;
+    }
+
+    float result = 0;
+
+    MDForDevice(dim, index, start, end, [] () 
+    {
+
+    });
+    
+    outH.set(blockSize[0], threadIndex);
+
+    
+
+    delete[] index;
+    
     /*
-	// create index related local variables
-    int midIndex = blockDim.x * blockIdx.x + threadIdx.x;
-    int radius = wArrSize / 2;
 	
-	// reposition input and output array pointers for simplicity
-	in += radius;
-	out += radius;
-
-    // Arrange shared memory
-    extern __shared__ float sharedMem[];
-
-    float *sh_in = sharedMem;
-	float *sh_wArr = &sh_in[blockDim.x + 2 * radius];
 	
-	// reposition sh_in array pointer
-	sh_in += radius;
-
-    // cache required part of the input array to shared memory
-    sh_in[threadIdx.x] = in[midIndex]; // middle
-    if (threadIdx.x < radius) sh_in[threadIdx.x - radius] = in[midIndex - radius]; // left
-    if (threadIdx.x >= blockDim.x - radius) sh_in[threadIdx.x + radius] = in[midIndex + radius]; // right
-    
-    // copy boundaries unchanged to out
-    //if (midIndex < radius) out[midIndex - radius] = sh_in[threadIdx.x - radius]; // left
-    //if (midIndex >= blockDim.x - radius) out[midIndex + radius] = sh_in[threadIdx.x + radius]; // right
-
-    // cache weight array to shared memory if nescessary
-    float *wArrPtr;
-    if (blockDim.x - 2 * radius >= wArrSize)
-    {
-        int startId = radius;
-        if (threadIdx.x >= startId && threadIdx.x < startId + wArrSize) 
-                sh_wArr[threadIdx.x - startId] = wArr[threadIdx.x - startId];
-        wArrPtr = sh_wArr;
-    }
-    else
-    {
-        wArrPtr = wArr;
-    }
-
-    // reposition wArrPtr array pointer
-    wArrPtr += radius;
-    
-    // synchronize threads before starting to access shared memory objects
-    __syncthreads();
-    
     // calculate output
     float result = 0;
     for (int i = -1 * radius; i <= radius; i++)
@@ -82,6 +116,14 @@ void stencilKernelShared (float *in, float *out, int *arrSize, float *wArr, int 
     // write output
     out[midIndex] = result;
     */
+  
+    // deallocations
+    delete[] blockSize;
+    delete[] radius;
+    delete[] dataSize;
+    delete[] gridSize;
+    delete[] threadIndex;
+    delete[] blockIndex;
 }
 
 /*
@@ -122,15 +164,20 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
     }
 
     // declare and allocate device arrays
-	float *d_in, *d_out, *d_wArr;
+    float *d_in, *d_out, *d_wArr;
+    int *d_arrSize, *d_wArrSize;
     
     cudaMalloc(&d_in, extArrLinSize * sizeof(float));
     cudaMalloc(&d_out, extArrLinSize * sizeof(float));
     cudaMalloc(&d_wArr, wArrLinSize * sizeof(float));
+    cudaMalloc(&d_arrSize, dim * sizeof(int));
+    cudaMalloc(&d_wArrSize, dim * sizeof(int));
 
     // copy initial data from host to device
     cudaMemcpy(d_in, in, arrLinSize * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpy(d_wArr, wArr, wArrLinSize * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_wArr, wArr, wArrLinSize * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_arrSize, extArrSize, dim * sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_wArrSize, wArrSize, dim * sizeof(int), cudaMemcpyHostToDevice);
 
     // apply CUDA stencil kernel	
     int *blockNPerDim = (int *) alloca(dim);
@@ -139,8 +186,8 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
     int nBlock = 1;
     for (int i=0; i<dim; i++) nBlock *= blockNPerDim[i];
 
-	stencilKernelShared <<< nBlock, nThread >>> 
-			(d_in, d_out, extArrSize, d_wArr, wArrSize, dim);
+	stencilKernel <<< nBlock, nThread >>> 
+			(d_in, d_out, d_arrSize, d_wArr, d_wArrSize, dim, blockSide);
 
 	// copy output data from device to host
     cudaMemcpy(out, d_out, arrLinSize * sizeof(float), cudaMemcpyDeviceToHost);
@@ -175,6 +222,8 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
 	cudaFree(d_in);
     cudaFree(d_out);
     cudaFree(d_wArr);
+    cudaFree(d_arrSize);
+    cudaFree(d_wArrSize);
 }
 
 
