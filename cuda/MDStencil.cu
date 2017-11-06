@@ -163,6 +163,39 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
         wArrLinSize *= wArrSize[i];
     }
 
+    // create extended array
+    float *extIn = new float[extArrLinSize];
+
+    MDArrayHelper<float> extInH(extIn, dim, extArrSize);
+    MDArrayHelper<float> inH(in, dim, arrSize);
+
+    int *i = (int *) alloca(dim);
+    int *start = (int *) alloca(dim);
+    int *end = (int *) alloca(dim);
+
+    for (int i=0; i<dim; i++) 
+    {
+        start[i] = 0;
+        end[i] = arrSize[i];
+    }
+
+    MDForHost(dim, i, start, end, [&] ()
+    {
+        extInH.set(inH.get(i), i);
+    });
+
+    for (int i=0; i<dim; i++) 
+    {
+        start[i] = arrSize[i];
+        end[i] = extArrSize[i];
+    }
+
+    MDForHost(dim, i, start, end, [&] ()
+    {
+        extInH.set(inH.get(i), i);
+    });
+
+
     // declare and allocate device arrays
     float *d_in, *d_out, *d_wArr;
     int *d_arrSize, *d_wArrSize;
@@ -174,7 +207,7 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
     cudaMalloc(&d_wArrSize, dim * sizeof(int));
 
     // copy initial data from host to device
-    cudaMemcpy(d_in, in, arrLinSize * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_in, extIn, extArrLinSize * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(d_wArr, wArr, wArrLinSize * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(d_arrSize, extArrSize, dim * sizeof(int), cudaMemcpyHostToDevice);
     cudaMemcpy(d_wArrSize, wArrSize, dim * sizeof(int), cudaMemcpyHostToDevice);
@@ -189,17 +222,14 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
 	stencilKernel <<< nBlock, nThread >>> 
 			(d_in, d_out, d_arrSize, d_wArr, d_wArrSize, dim, blockSide);
 
-	// copy output data from device to host
-    cudaMemcpy(out, d_out, arrLinSize * sizeof(float), cudaMemcpyDeviceToHost);
+    // copy output data from device to host
+    float *extOut = new float[extArrLinSize];
+    cudaMemcpy(extOut, d_out, extArrLinSize * sizeof(float), cudaMemcpyDeviceToHost);
     
-    // copy boundaries unchanged to out
+    // create out out of extOut and copy boundaries unchanged
     // Note: This part needs optimization, this version iterates the entire data.
-    MDArrayHelper<float> outHelper(out, dim, arrSize);
-    MDArrayHelper<float> inHelper(in, dim, arrSize);
-
-    int *i = (int *) alloca(dim);
-    int *start = (int *) alloca(dim);
-    int *end = (int *) alloca(dim);
+    MDArrayHelper<float> outH(out, dim, arrSize);
+    MDArrayHelper<float> extOutH(extOut, dim, extArrSize);
 
     for (int i=0; i<dim; i++) 
     {
@@ -212,10 +242,8 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
         bool pred = false; // boundary: true
         for (int a=0; a<dim; a++) if (i[a] < radius[a] || i[a] >= radius[a] + dataSize[a]) pred = true;
 
-        if (pred)
-        {
-            outHelper.set(inHelper.get(i), i);
-        }
+        if (pred) outH.set(inH.get(i), i);
+        else outH.set(extOutH.get(i), i);
     });
 	
 	// deallocate device arrays
@@ -224,6 +252,9 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
     cudaFree(d_wArr);
     cudaFree(d_arrSize);
     cudaFree(d_wArrSize);
+
+    delete[] extIn;
+    delete[] extOut;
 }
 
 
