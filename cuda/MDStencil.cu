@@ -7,22 +7,6 @@
 using namespace std;
 
 
-
-__device__ void MDForDevice(int dim, int *i, int *start, int *end, void (*body)())
-{
-    if (dim == 0) 
-    {
-        body();
-        return;
-    }
-
-    for (i[0] = start[0]; i[0] < end[0]; i[0]++)
-    {
-        MDForDevice(dim - 1, i + 1, start + 1, end + 1, body);
-    }
-}
-
-
 /*
 Note: The kernel may need shared memory optimization
 */
@@ -80,42 +64,27 @@ void stencilKernel (float *in, float *out, int *arrSize, float *wArr, int *wArrS
     delete[] newPosition;
     
     // calculate output
-    int *index = new int[dim];
-    int *start = new int[dim];
-    int *end = new int[dim];
+    int wArrLinSize = 1;
+    for (int i=0; i<dim; i++) wArrLinSize *= wArrSize[i];
 
-    for (int i=0; i<dim; i++)
-    {
-        start[i] = 0;
-        end[i] = blockSide;
-    }
+    int *wIndex = new int[dim];
+    int *currIndex = new int[dim];
 
     float result = 0;
-
-    MDForDevice(dim, index, start, end, [] () 
+    for (int i=0; i<wArrLinSize; i++) 
     {
+        wArrH.getCoords(wIndex, i);
+        for (int j=0; j<dim; j++) currIndex[j] = wIndex[j] + threadIndex[j];
 
-    });
-    
-    outH.set(blockSize[0], threadIndex);
-
-    
-
-    delete[] index;
-    
-    /*
-	
-	
-    // calculate output
-    float result = 0;
-    for (int i = -1 * radius; i <= radius; i++)
-    {
-        result += wArrPtr[i] * sh_in[threadIdx.x + i];
+        result += wArrH.get(wIndex) * inH.get(currIndex);
+        
     }
-    
+
+    delete[] wIndex;
+    delete[] currIndex;
+
     // write output
-    out[midIndex] = result;
-    */
+    outH.set(result, threadIndex);
   
     // deallocations
     delete[] blockSize;
@@ -192,7 +161,7 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
 
     MDForHost(dim, i, start, end, [&] ()
     {
-        extInH.set(inH.get(i), i);
+        extInH.set(0, i);
     });
 
 
@@ -268,12 +237,16 @@ void print2D(float *arr, int *size)
     }
 }
 
+
+#define ARRSIDE 15
+#define WARRSIDE 3
+
 void test2D()
 {
     // declare and allocate input, output, and weight arrays
     int dim = 2;
-    int dataSize[] = {5, 5};
-    int wArrSize[] = {3, 3};
+    int dataSize[] = {ARRSIDE, ARRSIDE};
+    int wArrSize[] = {WARRSIDE, WARRSIDE};
     
     int *radius = (int *) alloca(dim);
     for(int i=0; i<dim; i++) radius[i] = wArrSize[i] / 2;
@@ -345,7 +318,8 @@ void test2D()
         int *index = (int *) alloca(dim);
         wHelper.getCoords(index, linI);
 
-        wHelper.set((float) 1 / wArrLinSize, index);
+        //wHelper.set((float) 1 / wArrLinSize, index);
+        wHelper.set((float) 1, index);
     }
 
     cout << "Weight Array: " << endl;
