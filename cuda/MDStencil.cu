@@ -55,7 +55,7 @@ void stencilKernel (float *in, float *out, int *arrSize, float *wArr, int *wArrS
 
     // reposition helpers
     int *newPosition = new int[dim];
-    for (int i=0; i<dim; i++) newPosition[i] = blockIndex[i] * blockSide + radius[i];
+    for (int i=0; i<dim; i++) newPosition[i] = blockIndex[i] * blockSize[i] + radius[i];
 
     inH.reposition(newPosition);
     outH.reposition(newPosition);
@@ -95,6 +95,18 @@ void stencilKernel (float *in, float *out, int *arrSize, float *wArr, int *wArrS
     delete[] blockIndex;
 }
 
+
+void print2D(float *arr, int *size)
+{
+    for (int i=0; i<size[0]; i++) 
+    {
+        for (int j=0; j<size[1]; j++) cout << arr[i * size[0] + j] << " ";
+        cout << endl;
+    }
+}
+
+#define MAX_N_THREAD 32
+
 /*
 in, out: input and output arrays including boundary of radius (wArrSize / 2) at both sides
 arrSize: input and output array sizes for each dimention
@@ -104,8 +116,7 @@ wArrSize: weight array size for each dimention
 void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSize, int dim)
 {
     // calculate number of thread per block
-    int maxNThread = 256;
-    int blockSide = floor(pow(maxNThread, (float) 1 / dim));
+    int blockSide = floor(pow(MAX_N_THREAD, (float) 1 / dim));
     int nThread = pow(blockSide, dim);
     
     // create size related variables
@@ -132,7 +143,7 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
         wArrLinSize *= wArrSize[i];
     }
 
-    // create extended array
+    // create extended input array
     float *extIn = new float[extArrLinSize];
 
     MDArrayHelper<float> extInH(extIn, dim, extArrSize);
@@ -152,19 +163,7 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
     {
         extInH.set(inH.get(i), i);
     });
-
-    for (int i=0; i<dim; i++) 
-    {
-        start[i] = arrSize[i];
-        end[i] = extArrSize[i];
-    }
-
-    MDForHost(dim, i, start, end, [&] ()
-    {
-        extInH.set(0, i);
-    });
-
-
+    
     // declare and allocate device arrays
     float *d_in, *d_out, *d_wArr;
     int *d_arrSize, *d_wArrSize;
@@ -184,19 +183,17 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
     // apply CUDA stencil kernel	
     int *blockNPerDim = (int *) alloca(dim);
     for (int i=0; i<dim; i++) blockNPerDim[i] = (extArrSize[i] - 2 * radius[i]) / blockSide;
-
+    
     int nBlock = 1;
     for (int i=0; i<dim; i++) nBlock *= blockNPerDim[i];
-
-	stencilKernel <<< nBlock, nThread >>> 
-			(d_in, d_out, d_arrSize, d_wArr, d_wArrSize, dim, blockSide);
-
+    
+	stencilKernel <<< nBlock, nThread >>> (d_in, d_out, d_arrSize, d_wArr, d_wArrSize, dim, blockSide);
+    
     // copy output data from device to host
     float *extOut = new float[extArrLinSize];
     cudaMemcpy(extOut, d_out, extArrLinSize * sizeof(float), cudaMemcpyDeviceToHost);
-    
-    // create out out of extOut and copy boundaries unchanged
-    // Note: This part needs optimization, this version iterates the entire data.
+
+    // create out from extOut and copy boundaries unchanged
     MDArrayHelper<float> outH(out, dim, arrSize);
     MDArrayHelper<float> extOutH(extOut, dim, extArrSize);
 
@@ -228,17 +225,7 @@ void applyStencil(float *in, float *out, int *arrSize, float *wArr, int *wArrSiz
 
 
 
-void print2D(float *arr, int *size)
-{
-    for (int i=0; i<size[0]; i++) 
-    {
-        for (int j=0; j<size[1]; j++) cout << arr[i * size[0] + j] << " ";
-        cout << endl;
-    }
-}
-
-
-#define ARRSIDE 15
+#define ARRSIDE 12
 #define WARRSIDE 3
 
 void test2D()
@@ -277,13 +264,18 @@ void test2D()
     outHelper.reposition(radius);
 
     // initialize input array
-    int *index = new int[dim];
+    int *index = (int *) alloca(dim);
+    int *start = (int *) alloca(dim);
+    int *end = (int *) alloca(dim);
 
-    for (int linI = 0; linI<arrLinSize; linI++)
+    for (int i=0; i<dim; i++)
     {
-        int *index = (int *) alloca(dim);
-        inHelper.getCoords(index, linI);
+        start[i] = -radius[i];
+        end[i] = dataSize[i] + radius[i];
+    }
 
+    MDForHost(dim, index, start, end, [&] () 
+    {
         bool pred = true; // data: true, boundary: false
         for (int i=0; i<dim; i++) if (index[i] < 0 || index[i] >= dataSize[i]) pred = false;
 
@@ -291,36 +283,33 @@ void test2D()
         {   // data
             int totIndex = 0;
             for (int i=0; i<dim; i++) totIndex += index[i];
-            inHelper.set((totIndex % 2) + 1, index);
+            //inHelper.set((totIndex % 2) + 1, index);
+            inHelper.set(1, index);
         }
         else
         {   //boundary
             inHelper.set(5, index);
         }
-    }
+    });
 
     cout << "Input: " << endl;
     print2D(in, arrSize);
     cout << endl;
 
 	// initialize output
-    for (int linI=0; linI<arrLinSize; linI++) 
-    {
-        int *index = (int *) alloca(dim);
-        outHelper.getCoords(index, linI);
-
-        outHelper.set(0, index);
-    }
+    for (int linI=0; linI<arrLinSize; linI++) out[linI] = 0;
 	
-	// initialize weight array
-    for (int linI=0; linI<wArrLinSize; linI++) 
+    // initialize weight array
+    for (int i=0; i<dim; i++)
     {
-        int *index = (int *) alloca(dim);
-        wHelper.getCoords(index, linI);
-
-        //wHelper.set((float) 1 / wArrLinSize, index);
-        wHelper.set((float) 1, index);
+        start[i] = 0;
+        end[i] = wArrSize[i];
     }
+
+    MDForHost(dim, index, start, end, [&] ()
+    {
+        wHelper.set((float) 1, index);
+    });
 
     cout << "Weight Array: " << endl;
     print2D(wArr, wArrSize);

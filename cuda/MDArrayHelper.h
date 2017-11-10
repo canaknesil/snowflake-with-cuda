@@ -32,6 +32,7 @@ private:
     int dim;
     int *dimSize;
     int *dimCoef;
+    int *position;
 
     _CCM_ void calcDimCoef(const int *dimSize, int *dimCoef, int dim);
 

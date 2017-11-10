@@ -25,6 +25,9 @@ MDArrayHelper<T>::MDArrayHelper(T *data, int dim, int *dimSize)
 
     this->dimCoef = new int[dim];
     calcDimCoef(dimSize, this->dimCoef, dim);
+
+    this->position = new int[dim];
+    for (int i=0; i<dim; i++) this->position[i] = 0;
 }
 
 
@@ -33,6 +36,7 @@ MDArrayHelper<T>::~MDArrayHelper()
 {
     delete[] dimSize;
     delete[] dimCoef;
+    delete[] position;
 }
 
 
@@ -47,12 +51,13 @@ int MDArrayHelper<T>::getLinIndex(int *index)
 template <class T>
 void MDArrayHelper<T>::getCoords(int *index, int linIndex)
 {
-    linIndex -= data - dataOrigin; // apply reposioning
     for (int i=0; i<dim; i++)
     {
         index[i] = linIndex / dimCoef[i];
         linIndex %= dimCoef[i];
     }
+
+    for (int i=0; i<dim; i++) index[i] -= position[i];
 }
 
 
@@ -74,5 +79,6 @@ template <class T>
 void MDArrayHelper<T>::reposition(int *index)
 {
     data = dataOrigin + getLinIndex(index);
+    for (int i=0; i<dim; i++) position[i] = index[i];
 }
 
