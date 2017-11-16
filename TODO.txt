@@ -1,2 +1,1 @@
-Fill shared memory by randomly chosen threads. or serially chosen
-Implement stencils for any number of dimention.
+Implement node visitor as starting (subclass of Compiler).

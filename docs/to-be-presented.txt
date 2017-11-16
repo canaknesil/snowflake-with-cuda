@@ -1,0 +1,8 @@
+real life stencils
+stencil computation
+applications like fluid dynamics simulation
+Snowflake
+DSL
+just in time compiler (dynamic translation)
+micro compiler
+embedded in Python

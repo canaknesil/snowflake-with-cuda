@@ -1,0 +1,12 @@
+node.py
+    class StencilNode(ast.AST)
+    
+    class Stencil(StencilNode)
+    class DomainUnion(StencilNode)
+    class RectangularDomain(StencilNode)
+    class StencilComponent(StencilNode)
+    class StencilConstant(StencilNode)
+    class WeightArray(StencilNode)
+    class SparseWeightArray(StencilNode)
+    class StencilOp(StencilNode)
+    class StencilGroup(StencilNode)
