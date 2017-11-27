@@ -1,0 +1,443 @@
+==================================================
+('AST tree for', 'asdf')
+==================================================
+Module(body=[
+    Expr(value=Call(func=Name(id='Block', ctx=Load(), lineno=1, col_offset=0), args=[], keywords=[
+        keyword(arg='body', value=List(elts=[
+            Call(func=Name(id='IterationSpace', ctx=Load(), lineno=1, col_offset=12), args=[], keywords=[
+                keyword(arg='space', value=Call(func=Name(id='NDSpace', ctx=Load(), lineno=1, col_offset=33), args=[], keywords=[
+                    keyword(arg='spaces', value=List(elts=[
+                        Call(func=Name(id='Space', ctx=Load(), lineno=1, col_offset=49), args=[], keywords=[
+                            keyword(arg='low', value=Tuple(elts=[
+                                Num(n=1, lineno=1, col_offset=60),
+                                Num(n=1, lineno=1, col_offset=63),
+                              ], ctx=Load(), lineno=1, col_offset=60)),
+                            keyword(arg='high', value=Tuple(elts=[
+                                Num(n=-1, lineno=1, col_offset=73),
+                                Num(n=-1, lineno=1, col_offset=77),
+                              ], ctx=Load(), lineno=1, col_offset=73)),
+                            keyword(arg='stride', value=Tuple(elts=[
+                                Num(n=1, lineno=1, col_offset=90),
+                                Num(n=1, lineno=1, col_offset=93),
+                              ], ctx=Load(), lineno=1, col_offset=90)),
+                          ], starargs=None, kwargs=None, lineno=1, col_offset=49),
+                      ], ctx=Load(), lineno=1, col_offset=48)),
+                  ], starargs=None, kwargs=None, lineno=1, col_offset=33)),
+                keyword(arg='body', value=List(elts=[
+                    Call(func=Name(id='Assign', ctx=Load(), lineno=1, col_offset=106), args=[], keywords=[
+                        keyword(arg='targets', value=List(elts=[
+                            Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=122), args=[], keywords=[
+                                keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=138), args=[], keywords=[
+                                    keyword(arg='id', value=Str(s='output', lineno=1, col_offset=146)),
+                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=160), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=160)),
+                                  ], starargs=None, kwargs=None, lineno=1, col_offset=138)),
+                                keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=175), args=[], keywords=[
+                                    keyword(arg='value', value=Call(func=Name(id='ArrayIndex', ctx=Load(), lineno=1, col_offset=187), args=[], keywords=[
+                                        keyword(arg='elts', value=List(elts=[
+                                            Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=204), args=[], keywords=[
+                                                keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=212)),
+                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=227), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=227)),
+                                              ], starargs=None, kwargs=None, lineno=1, col_offset=204),
+                                            Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=236), args=[], keywords=[
+                                                keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=244)),
+                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=259), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=259)),
+                                              ], starargs=None, kwargs=None, lineno=1, col_offset=236),
+                                          ], ctx=Load(), lineno=1, col_offset=203)),
+                                        keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=274)),
+                                        keyword(arg='name', value=Str(s='index', lineno=1, col_offset=282)),
+                                      ], starargs=None, kwargs=None, lineno=1, col_offset=187)),
+                                  ], starargs=None, kwargs=None, lineno=1, col_offset=175)),
+                                keyword(arg='ctx', value=Call(func=Name(id='Store', ctx=Load(), lineno=1, col_offset=297), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=297)),
+                              ], starargs=None, kwargs=None, lineno=1, col_offset=122),
+                          ], ctx=Load(), lineno=1, col_offset=121)),
+                        keyword(arg='value', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=314), args=[], keywords=[
+                            keyword(arg='left', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=325), args=[], keywords=[
+                                keyword(arg='left', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=336), args=[], keywords=[
+                                    keyword(arg='left', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=347), args=[], keywords=[
+                                        keyword(arg='left', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=358), args=[], keywords=[
+                                            keyword(arg='left', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=369), args=[], keywords=[
+                                                keyword(arg='left', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=380), args=[], keywords=[
+                                                    keyword(arg='left', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=391), args=[], keywords=[
+                                                        keyword(arg='left', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=402), args=[], keywords=[
+                                                            keyword(arg='left', value=Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=413), args=[], keywords=[
+                                                                keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=429), args=[], keywords=[
+                                                                    keyword(arg='id', value=Str(s='weight_array', lineno=1, col_offset=437)),
+                                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=457), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=457)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=429)),
+                                                                keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=472), args=[], keywords=[
+                                                                    keyword(arg='value', value=Call(func=Name(id='IndexOp', ctx=Load(), lineno=1, col_offset=484), args=[], keywords=[
+                                                                        keyword(arg='elts', value=List(elts=[
+                                                                            Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=498), args=[], keywords=[
+                                                                                keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=509), args=[], keywords=[
+                                                                                    keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=517)),
+                                                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=532), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=532)),
+                                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=509)),
+                                                                                keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=544), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=544)),
+                                                                                keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=557), args=[], keywords=[
+                                                                                    keyword(arg='n', value=Num(n=-1, lineno=1, col_offset=563)),
+                                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=557)),
+                                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=498),
+                                                                            Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=569), args=[], keywords=[
+                                                                                keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=580), args=[], keywords=[
+                                                                                    keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=588)),
+                                                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=603), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=603)),
+                                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=580)),
+                                                                                keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=615), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=615)),
+                                                                                keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=628), args=[], keywords=[
+                                                                                    keyword(arg='n', value=Num(n=-1, lineno=1, col_offset=634)),
+                                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=628)),
+                                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=569),
+                                                                          ], ctx=Load(), lineno=1, col_offset=497)),
+                                                                        keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=646)),
+                                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=484)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=472)),
+                                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=655), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=655)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=413)),
+                                                            keyword(arg='op', value=Call(func=Name(id='Mult', ctx=Load(), lineno=1, col_offset=667), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=667)),
+                                                            keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=681), args=[], keywords=[
+                                                                keyword(arg='n', value=Num(n=0.1111111111111111, lineno=1, col_offset=687)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=681)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=402)),
+                                                        keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=712), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=712)),
+                                                        keyword(arg='right', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=725), args=[], keywords=[
+                                                            keyword(arg='left', value=Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=736), args=[], keywords=[
+                                                                keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=752), args=[], keywords=[
+                                                                    keyword(arg='id', value=Str(s='weight_array', lineno=1, col_offset=760)),
+                                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=780), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=780)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=752)),
+                                                                keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=795), args=[], keywords=[
+                                                                    keyword(arg='value', value=Call(func=Name(id='IndexOp', ctx=Load(), lineno=1, col_offset=807), args=[], keywords=[
+                                                                        keyword(arg='elts', value=List(elts=[
+                                                                            Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=821), args=[], keywords=[
+                                                                                keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=832), args=[], keywords=[
+                                                                                    keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=840)),
+                                                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=855), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=855)),
+                                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=832)),
+                                                                                keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=867), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=867)),
+                                                                                keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=880), args=[], keywords=[
+                                                                                    keyword(arg='n', value=Num(n=-1, lineno=1, col_offset=886)),
+                                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=880)),
+                                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=821),
+                                                                            Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=892), args=[], keywords=[
+                                                                                keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=903), args=[], keywords=[
+                                                                                    keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=911)),
+                                                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=926), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=926)),
+                                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=903)),
+                                                                                keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=938), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=938)),
+                                                                                keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=951), args=[], keywords=[
+                                                                                    keyword(arg='n', value=Num(n=0, lineno=1, col_offset=957)),
+                                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=951)),
+                                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=892),
+                                                                          ], ctx=Load(), lineno=1, col_offset=820)),
+                                                                        keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=968)),
+                                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=807)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=795)),
+                                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=977), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=977)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=736)),
+                                                            keyword(arg='op', value=Call(func=Name(id='Mult', ctx=Load(), lineno=1, col_offset=989), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=989)),
+                                                            keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1003), args=[], keywords=[
+                                                                keyword(arg='n', value=Num(n=0.1111111111111111, lineno=1, col_offset=1009)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=1003)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=725)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=391)),
+                                                    keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=1035), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1035)),
+                                                    keyword(arg='right', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=1048), args=[], keywords=[
+                                                        keyword(arg='left', value=Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=1059), args=[], keywords=[
+                                                            keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=1075), args=[], keywords=[
+                                                                keyword(arg='id', value=Str(s='weight_array', lineno=1, col_offset=1083)),
+                                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1103), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1103)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=1075)),
+                                                            keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=1118), args=[], keywords=[
+                                                                keyword(arg='value', value=Call(func=Name(id='IndexOp', ctx=Load(), lineno=1, col_offset=1130), args=[], keywords=[
+                                                                    keyword(arg='elts', value=List(elts=[
+                                                                        Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=1144), args=[], keywords=[
+                                                                            keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=1155), args=[], keywords=[
+                                                                                keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=1163)),
+                                                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1178), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1178)),
+                                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=1155)),
+                                                                            keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=1190), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1190)),
+                                                                            keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1203), args=[], keywords=[
+                                                                                keyword(arg='n', value=Num(n=-1, lineno=1, col_offset=1209)),
+                                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=1203)),
+                                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1144),
+                                                                        Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=1215), args=[], keywords=[
+                                                                            keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=1226), args=[], keywords=[
+                                                                                keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=1234)),
+                                                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1249), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1249)),
+                                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=1226)),
+                                                                            keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=1261), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1261)),
+                                                                            keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1274), args=[], keywords=[
+                                                                                keyword(arg='n', value=Num(n=1, lineno=1, col_offset=1280)),
+                                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=1274)),
+                                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1215),
+                                                                      ], ctx=Load(), lineno=1, col_offset=1143)),
+                                                                    keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=1291)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=1130)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=1118)),
+                                                            keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1300), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1300)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1059)),
+                                                        keyword(arg='op', value=Call(func=Name(id='Mult', ctx=Load(), lineno=1, col_offset=1312), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1312)),
+                                                        keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1326), args=[], keywords=[
+                                                            keyword(arg='n', value=Num(n=0.1111111111111111, lineno=1, col_offset=1332)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1326)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1048)),
+                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=380)),
+                                                keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=1358), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1358)),
+                                                keyword(arg='right', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=1371), args=[], keywords=[
+                                                    keyword(arg='left', value=Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=1382), args=[], keywords=[
+                                                        keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=1398), args=[], keywords=[
+                                                            keyword(arg='id', value=Str(s='weight_array', lineno=1, col_offset=1406)),
+                                                            keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1426), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1426)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1398)),
+                                                        keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=1441), args=[], keywords=[
+                                                            keyword(arg='value', value=Call(func=Name(id='IndexOp', ctx=Load(), lineno=1, col_offset=1453), args=[], keywords=[
+                                                                keyword(arg='elts', value=List(elts=[
+                                                                    Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=1467), args=[], keywords=[
+                                                                        keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=1478), args=[], keywords=[
+                                                                            keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=1486)),
+                                                                            keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1501), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1501)),
+                                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1478)),
+                                                                        keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=1513), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1513)),
+                                                                        keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1526), args=[], keywords=[
+                                                                            keyword(arg='n', value=Num(n=0, lineno=1, col_offset=1532)),
+                                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1526)),
+                                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1467),
+                                                                    Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=1537), args=[], keywords=[
+                                                                        keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=1548), args=[], keywords=[
+                                                                            keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=1556)),
+                                                                            keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1571), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1571)),
+                                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1548)),
+                                                                        keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=1583), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1583)),
+                                                                        keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1596), args=[], keywords=[
+                                                                            keyword(arg='n', value=Num(n=-1, lineno=1, col_offset=1602)),
+                                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1596)),
+                                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1537),
+                                                                  ], ctx=Load(), lineno=1, col_offset=1466)),
+                                                                keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=1614)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=1453)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1441)),
+                                                        keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1623), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1623)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1382)),
+                                                    keyword(arg='op', value=Call(func=Name(id='Mult', ctx=Load(), lineno=1, col_offset=1635), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1635)),
+                                                    keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1649), args=[], keywords=[
+                                                        keyword(arg='n', value=Num(n=0.1111111111111111, lineno=1, col_offset=1655)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1649)),
+                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=1371)),
+                                              ], starargs=None, kwargs=None, lineno=1, col_offset=369)),
+                                            keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=1681), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1681)),
+                                            keyword(arg='right', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=1694), args=[], keywords=[
+                                                keyword(arg='left', value=Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=1705), args=[], keywords=[
+                                                    keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=1721), args=[], keywords=[
+                                                        keyword(arg='id', value=Str(s='weight_array', lineno=1, col_offset=1729)),
+                                                        keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1749), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1749)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1721)),
+                                                    keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=1764), args=[], keywords=[
+                                                        keyword(arg='value', value=Call(func=Name(id='IndexOp', ctx=Load(), lineno=1, col_offset=1776), args=[], keywords=[
+                                                            keyword(arg='elts', value=List(elts=[
+                                                                Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=1790), args=[], keywords=[
+                                                                    keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=1801), args=[], keywords=[
+                                                                        keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=1809)),
+                                                                        keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1824), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1824)),
+                                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1801)),
+                                                                    keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=1836), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1836)),
+                                                                    keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1849), args=[], keywords=[
+                                                                        keyword(arg='n', value=Num(n=0, lineno=1, col_offset=1855)),
+                                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1849)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=1790),
+                                                                Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=1860), args=[], keywords=[
+                                                                    keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=1871), args=[], keywords=[
+                                                                        keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=1879)),
+                                                                        keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1894), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1894)),
+                                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1871)),
+                                                                    keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=1906), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1906)),
+                                                                    keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1919), args=[], keywords=[
+                                                                        keyword(arg='n', value=Num(n=0, lineno=1, col_offset=1925)),
+                                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1919)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=1860),
+                                                              ], ctx=Load(), lineno=1, col_offset=1789)),
+                                                            keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=1936)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=1776)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=1764)),
+                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=1945), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1945)),
+                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=1705)),
+                                                keyword(arg='op', value=Call(func=Name(id='Mult', ctx=Load(), lineno=1, col_offset=1957), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=1957)),
+                                                keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=1971), args=[], keywords=[
+                                                    keyword(arg='n', value=Num(n=0.1111111111111111, lineno=1, col_offset=1977)),
+                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=1971)),
+                                              ], starargs=None, kwargs=None, lineno=1, col_offset=1694)),
+                                          ], starargs=None, kwargs=None, lineno=1, col_offset=358)),
+                                        keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2003), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2003)),
+                                        keyword(arg='right', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2016), args=[], keywords=[
+                                            keyword(arg='left', value=Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=2027), args=[], keywords=[
+                                                keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=2043), args=[], keywords=[
+                                                    keyword(arg='id', value=Str(s='weight_array', lineno=1, col_offset=2051)),
+                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2071), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2071)),
+                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=2043)),
+                                                keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=2086), args=[], keywords=[
+                                                    keyword(arg='value', value=Call(func=Name(id='IndexOp', ctx=Load(), lineno=1, col_offset=2098), args=[], keywords=[
+                                                        keyword(arg='elts', value=List(elts=[
+                                                            Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2112), args=[], keywords=[
+                                                                keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=2123), args=[], keywords=[
+                                                                    keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=2131)),
+                                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2146), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2146)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=2123)),
+                                                                keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2158), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2158)),
+                                                                keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=2171), args=[], keywords=[
+                                                                    keyword(arg='n', value=Num(n=0, lineno=1, col_offset=2177)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=2171)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2112),
+                                                            Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2182), args=[], keywords=[
+                                                                keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=2193), args=[], keywords=[
+                                                                    keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=2201)),
+                                                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2216), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2216)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=2193)),
+                                                                keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2228), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2228)),
+                                                                keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=2241), args=[], keywords=[
+                                                                    keyword(arg='n', value=Num(n=1, lineno=1, col_offset=2247)),
+                                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=2241)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2182),
+                                                          ], ctx=Load(), lineno=1, col_offset=2111)),
+                                                        keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=2258)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=2098)),
+                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=2086)),
+                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2267), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2267)),
+                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2027)),
+                                            keyword(arg='op', value=Call(func=Name(id='Mult', ctx=Load(), lineno=1, col_offset=2279), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2279)),
+                                            keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=2293), args=[], keywords=[
+                                                keyword(arg='n', value=Num(n=0.1111111111111111, lineno=1, col_offset=2299)),
+                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2293)),
+                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2016)),
+                                      ], starargs=None, kwargs=None, lineno=1, col_offset=347)),
+                                    keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2325), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2325)),
+                                    keyword(arg='right', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2338), args=[], keywords=[
+                                        keyword(arg='left', value=Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=2349), args=[], keywords=[
+                                            keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=2365), args=[], keywords=[
+                                                keyword(arg='id', value=Str(s='weight_array', lineno=1, col_offset=2373)),
+                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2393), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2393)),
+                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2365)),
+                                            keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=2408), args=[], keywords=[
+                                                keyword(arg='value', value=Call(func=Name(id='IndexOp', ctx=Load(), lineno=1, col_offset=2420), args=[], keywords=[
+                                                    keyword(arg='elts', value=List(elts=[
+                                                        Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2434), args=[], keywords=[
+                                                            keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=2445), args=[], keywords=[
+                                                                keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=2453)),
+                                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2468), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2468)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2445)),
+                                                            keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2480), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2480)),
+                                                            keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=2493), args=[], keywords=[
+                                                                keyword(arg='n', value=Num(n=1, lineno=1, col_offset=2499)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2493)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2434),
+                                                        Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2504), args=[], keywords=[
+                                                            keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=2515), args=[], keywords=[
+                                                                keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=2523)),
+                                                                keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2538), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2538)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2515)),
+                                                            keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2550), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2550)),
+                                                            keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=2563), args=[], keywords=[
+                                                                keyword(arg='n', value=Num(n=-1, lineno=1, col_offset=2569)),
+                                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2563)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2504),
+                                                      ], ctx=Load(), lineno=1, col_offset=2433)),
+                                                    keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=2581)),
+                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=2420)),
+                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2408)),
+                                            keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2590), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2590)),
+                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2349)),
+                                        keyword(arg='op', value=Call(func=Name(id='Mult', ctx=Load(), lineno=1, col_offset=2602), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2602)),
+                                        keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=2616), args=[], keywords=[
+                                            keyword(arg='n', value=Num(n=0.1111111111111111, lineno=1, col_offset=2622)),
+                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2616)),
+                                      ], starargs=None, kwargs=None, lineno=1, col_offset=2338)),
+                                  ], starargs=None, kwargs=None, lineno=1, col_offset=336)),
+                                keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2648), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2648)),
+                                keyword(arg='right', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2661), args=[], keywords=[
+                                    keyword(arg='left', value=Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=2672), args=[], keywords=[
+                                        keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=2688), args=[], keywords=[
+                                            keyword(arg='id', value=Str(s='weight_array', lineno=1, col_offset=2696)),
+                                            keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2716), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2716)),
+                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2688)),
+                                        keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=2731), args=[], keywords=[
+                                            keyword(arg='value', value=Call(func=Name(id='IndexOp', ctx=Load(), lineno=1, col_offset=2743), args=[], keywords=[
+                                                keyword(arg='elts', value=List(elts=[
+                                                    Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2757), args=[], keywords=[
+                                                        keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=2768), args=[], keywords=[
+                                                            keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=2776)),
+                                                            keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2791), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2791)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2768)),
+                                                        keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2803), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2803)),
+                                                        keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=2816), args=[], keywords=[
+                                                            keyword(arg='n', value=Num(n=1, lineno=1, col_offset=2822)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2816)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=2757),
+                                                    Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2827), args=[], keywords=[
+                                                        keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=2838), args=[], keywords=[
+                                                            keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=2846)),
+                                                            keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2861), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2861)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2838)),
+                                                        keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2873), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2873)),
+                                                        keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=2886), args=[], keywords=[
+                                                            keyword(arg='n', value=Num(n=0, lineno=1, col_offset=2892)),
+                                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2886)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=2827),
+                                                  ], ctx=Load(), lineno=1, col_offset=2756)),
+                                                keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=2903)),
+                                              ], starargs=None, kwargs=None, lineno=1, col_offset=2743)),
+                                          ], starargs=None, kwargs=None, lineno=1, col_offset=2731)),
+                                        keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=2912), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2912)),
+                                      ], starargs=None, kwargs=None, lineno=1, col_offset=2672)),
+                                    keyword(arg='op', value=Call(func=Name(id='Mult', ctx=Load(), lineno=1, col_offset=2924), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2924)),
+                                    keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=2938), args=[], keywords=[
+                                        keyword(arg='n', value=Num(n=0.1111111111111111, lineno=1, col_offset=2944)),
+                                      ], starargs=None, kwargs=None, lineno=1, col_offset=2938)),
+                                  ], starargs=None, kwargs=None, lineno=1, col_offset=2661)),
+                              ], starargs=None, kwargs=None, lineno=1, col_offset=325)),
+                            keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=2970), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=2970)),
+                            keyword(arg='right', value=Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=2983), args=[], keywords=[
+                                keyword(arg='left', value=Call(func=Name(id='Subscript', ctx=Load(), lineno=1, col_offset=2994), args=[], keywords=[
+                                    keyword(arg='value', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=3010), args=[], keywords=[
+                                        keyword(arg='id', value=Str(s='weight_array', lineno=1, col_offset=3018)),
+                                        keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=3038), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=3038)),
+                                      ], starargs=None, kwargs=None, lineno=1, col_offset=3010)),
+                                    keyword(arg='slice', value=Call(func=Name(id='Index', ctx=Load(), lineno=1, col_offset=3053), args=[], keywords=[
+                                        keyword(arg='value', value=Call(func=Name(id='IndexOp', ctx=Load(), lineno=1, col_offset=3065), args=[], keywords=[
+                                            keyword(arg='elts', value=List(elts=[
+                                                Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=3079), args=[], keywords=[
+                                                    keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=3090), args=[], keywords=[
+                                                        keyword(arg='id', value=Str(s='index_0', lineno=1, col_offset=3098)),
+                                                        keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=3113), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=3113)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=3090)),
+                                                    keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=3125), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=3125)),
+                                                    keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=3138), args=[], keywords=[
+                                                        keyword(arg='n', value=Num(n=1, lineno=1, col_offset=3144)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=3138)),
+                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=3079),
+                                                Call(func=Name(id='BinOp', ctx=Load(), lineno=1, col_offset=3149), args=[], keywords=[
+                                                    keyword(arg='left', value=Call(func=Name(id='Name', ctx=Load(), lineno=1, col_offset=3160), args=[], keywords=[
+                                                        keyword(arg='id', value=Str(s='index_1', lineno=1, col_offset=3168)),
+                                                        keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=3183), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=3183)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=3160)),
+                                                    keyword(arg='op', value=Call(func=Name(id='Add', ctx=Load(), lineno=1, col_offset=3195), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=3195)),
+                                                    keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=3208), args=[], keywords=[
+                                                        keyword(arg='n', value=Num(n=1, lineno=1, col_offset=3214)),
+                                                      ], starargs=None, kwargs=None, lineno=1, col_offset=3208)),
+                                                  ], starargs=None, kwargs=None, lineno=1, col_offset=3149),
+                                              ], ctx=Load(), lineno=1, col_offset=3078)),
+                                            keyword(arg='ndim', value=Num(n=2, lineno=1, col_offset=3225)),
+                                          ], starargs=None, kwargs=None, lineno=1, col_offset=3065)),
+                                      ], starargs=None, kwargs=None, lineno=1, col_offset=3053)),
+                                    keyword(arg='ctx', value=Call(func=Name(id='Load', ctx=Load(), lineno=1, col_offset=3234), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=3234)),
+                                  ], starargs=None, kwargs=None, lineno=1, col_offset=2994)),
+                                keyword(arg='op', value=Call(func=Name(id='Mult', ctx=Load(), lineno=1, col_offset=3246), args=[], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=3246)),
+                                keyword(arg='right', value=Call(func=Name(id='Num', ctx=Load(), lineno=1, col_offset=3260), args=[], keywords=[
+                                    keyword(arg='n', value=Num(n=0.1111111111111111, lineno=1, col_offset=3266)),
+                                  ], starargs=None, kwargs=None, lineno=1, col_offset=3260)),
+                              ], starargs=None, kwargs=None, lineno=1, col_offset=2983)),
+                          ], starargs=None, kwargs=None, lineno=1, col_offset=314)),
+                      ], starargs=None, kwargs=None, lineno=1, col_offset=106),
+                  ], ctx=Load(), lineno=1, col_offset=105)),
+              ], starargs=None, kwargs=None, lineno=1, col_offset=12),
+          ], ctx=Load(), lineno=1, col_offset=11)),
+      ], starargs=None, kwargs=None, lineno=1, col_offset=0), lineno=1, col_offset=0),
+  ])
+()

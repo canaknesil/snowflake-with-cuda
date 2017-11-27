@@ -10,3 +10,35 @@ node.py
     class SparseWeightArray(StencilNode)
     class StencilOp(StencilNode)
     class StencilGroup(StencilNode)
+
+compiler_nodes.py
+    class StencilCompilerNode(ast.AST)
+    
+    class IndexOp(StencilCompilerNode)
+    class ArrayIndex(IndexOp)
+    IterationSpace(StencilCompilerNode)
+    class NDSpace(StencilCompilerNode)
+    class Block(StencilCompilerNode)
+    class Space(StencilCompilerNode)
+    class NestedSpace(StencilCompilerNode)
+
+Abstract Grammer of Nodes:
+
+Stencil(op_tree)
+DomainUnion(domains)
+RectangularDomain()
+StencilComponent(name weights)
+StencilConstant(value)
+WeightArray(weights)
+SparseWeightArray(weights)
+StencilOp(left right)
+StencilGroup(body)
+
+Abstract Grammer for Compiler Nodes:
+
+IntexOp(elts ndim name)
+IterationSpace(space body)
+NDSpace(spaces)
+Block(body)
+Space(low high stride)
+NestedSpace(low high block_size stride)

@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append('../../snowflake')
+sys.path.append('../../')
 
 from snowflake.nodes import Stencil, WeightArray, StencilComponent, SparseWeightArray
 from snowflake.stencil_compiler import PythonCompiler
