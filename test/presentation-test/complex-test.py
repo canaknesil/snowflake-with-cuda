@@ -18,8 +18,10 @@ def print2DArray(array, sizes):
 #create input, output, and weight arrays
 dataSizes = (10, 10)
 wSizes = (3, 3)
-weights = np.ones(wSizes, dtype=np.float) / 9
-print("Weight Array: "); print2DArray(weights, wSizes); print("\n")
+weights1 = [[1, 0, 0], [0, 0, 0], [0, 0, 0]]
+weights2 = np.ones(wSizes, dtype=np.float) / 9
+print("Weight Array 1: "); print2DArray(weights1, wSizes); print("\n")
+print("Weight Array 2: "); print2DArray(weights2, wSizes); print("\n")
 
 input = np.zeros(dataSizes, dtype=np.float)
 out = np.zeros_like(input)
@@ -33,13 +35,17 @@ for x in xrange(10):
 print("Input: "); print2DArray(input, dataSizes); print("\n")
 
 #create stencil (Snowflake AST)
-weight_component = StencilComponent(
-	"weight_array",
-	WeightArray(weights)
+weight_component1 = StencilComponent(
+	"weight_array1",
+	WeightArray(weights1)
+)
+weight_component2 = StencilComponent(
+	"weight_array2",
+	WeightArray(weights2)
 )
 
 stencil = Stencil(
-	weight_component,
+	weight_component1 + weight_component2,
 	"output",
 	[(1, -1, 1)]*2
 )
@@ -49,9 +55,14 @@ compiler = PythonCompiler()
 kern = compiler.compile(stencil)
 
 #execute
-kern(out, input)
+kern(out, input, np.zeros(dataSizes, dtype=np.float))
+print("Output for weight array 1: "); print2DArray(out, dataSizes); print("\n")
 
-print("Output: "); print2DArray(out, dataSizes); print("\n")
+kern(out, np.zeros(dataSizes, dtype=np.float), input)
+print("Output for weight array 2: "); print2DArray(out, dataSizes); print("\n")
+
+kern(out, input, input)
+print("Output of sum of the results from both weight arrays: "); print2DArray(out, dataSizes); print("\n")
 
 
 

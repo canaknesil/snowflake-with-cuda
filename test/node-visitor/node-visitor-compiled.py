@@ -46,6 +46,10 @@ class StencilVisitor(Compiler):
 			print("Space low: ", fields[0], " high: ", fields[1], " block_size: ", fields[2], " stride: ", fields[3])
 		
 
+	def _evaluateSnowflake(self, tree):
+		print("evaluateSnowflake() not implemented.")
+
+
 	def _post_process(self, original, compiled, index_name, **kwargs):
 
 		print("Nodes from orjinal: ")
@@ -54,16 +58,17 @@ class StencilVisitor(Compiler):
 				print(type(node).__name__)
 				pass
 
-		print("\nNodes from compiled: ")
+		'''print("\nNodes from compiled: ")
 		for node in ast.walk(compiled):
 			if isinstance(node, ast.AST):
 				print(type(node).__name__)
 				pass
-
+		'''
 		#print(ast.dump(original))
 		#print(ast.dump(compiled))
 
 		self._evaluate(compiled)
+		self._evaluateSnowflake(original)
 
 		def toCall():
 			print("Callable is called.")
