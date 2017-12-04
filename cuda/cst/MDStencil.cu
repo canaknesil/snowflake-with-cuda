@@ -328,9 +328,10 @@ void test2D()
     delete[] wArr;
 }
 
-
+/*
 int main()
 {
     test2D();
     return 0;
 }
+*/

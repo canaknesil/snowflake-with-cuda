@@ -258,6 +258,7 @@ class WeightArray(StencilNode):
 
     def __init__(self, data):
         self.data = self.__componentize(data)
+        self.rawData = data
 
     @property
     def weights(self):
