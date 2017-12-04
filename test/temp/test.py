@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../../')
+sys.path.insert(0, '../../')
 
 from snowflake.nodes import *
 from snowflake.compiler_nodes import *
@@ -101,6 +101,6 @@ def evaluateComplexStencil2():
 	kern()
 
 
-#evaluateSimpleStencil()
+evaluateSimpleStencil()
 evaluateComplexStencil()
 #evaluateComplexStencil2()
