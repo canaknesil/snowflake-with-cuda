@@ -3,6 +3,7 @@ sys.path.insert(0, '../../')
 
 from snowflake.nodes import *
 from snowflake.stencil_compiler import PythonCompiler
+from snowflake.cuda_compiler import CUDACompiler
 
 import numpy as np
 from snowflake.vector import Vector
@@ -52,7 +53,7 @@ def withStencilOp():
 	)
 
 	#compile
-	compiler = PythonCompiler()
+	compiler = CUDACompiler()
 	kern = compiler.compile(stencil)
 
 	#execute
@@ -112,7 +113,7 @@ def withStencilGroup():
 	stencilGroup = StencilGroup([stencil1, stencil2])
 
 	#compile
-	compiler = PythonCompiler()
+	compiler = CUDACompiler()
 	kern = compiler.compile(stencilGroup)
 
 	#execute

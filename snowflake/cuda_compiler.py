@@ -124,26 +124,22 @@ class CUDACompiler(Compiler):
 		#print("CUDA IO Code: \n") ; print(ioStr) ; print("")
 		#print("CUDA Application Code: \n") ; print(appStr) ; print("")
 
-		cudaSrcDir = "../../cuda"
-		cudaPartsDir = "../../cuda-parts"
-		workDir = "./cudaSrc"
+		buildDir = "../../cuda-build"
 
-		subprocess.call("mkdir -p " + workDir, shell=True)
-		subprocess.call("rm -rf " + workDir + "/*", shell=True)
-		" + workDir + "
-		subprocess.call("cp -r " + cudaSrcDir + "/* ./" + workDir + "/", shell=True)
-		
-		subprocess.call("touch " + workDir + "/main.cu", shell=True)
-		subprocess.call("cat " + cudaPartsDir + "/includes.cu.part >> " + workDir + "/main.cu", shell=True)
-		subprocess.call("cat " + cudaPartsDir + "/extra-defs.cu.part >> " + workDir + "/main.cu", shell=True)
-		subprocess.call("cat " + cudaPartsDir + "/main-start.cu.part >> " + workDir + "/main.cu", shell=True)
-		f = open(workDir + "/main.cu", 'a') ; f.write(ioStr) ; f.close()
-		f = open(workDir + "/main.cu", 'a') ; f.write(appStr) ; f.close()
-		subprocess.call("cat " + cudaPartsDir + "/main-end.cu.part >> " + workDir + "/main.cu", shell=True)
+		includeCode = "#include <iostream>\n#include \"nodes.h\"\n\n"
+		mainStartCode = "int main() {\n\n"
+		mainEndCode = "return 0;\n}\n\n"
 
-		#execute cuda code
-		#TODO
+		f = open(buildDir + "/main.cu", 'w')
+		f.write(includeCode + mainStartCode + ioStr + appStr + mainEndCode)
+		f.close()
 		
+		#compile cuda code
+		print("\n----- CUDA compilation started -----\n")
+		print(appStr + "\n")
+		process = subprocess.Popen(["nvcc", "main.cu", "nodes.cu", "cst/MDStencil.cu", "cst/MDUtils.cu", "cst/binOp.cu", "-o", "run.exe"], cwd=buildDir)
+		process.wait()
+		print("\n----- CUDA compilation ended -----\n")
 
 		def toCall(*args):
 
@@ -186,17 +182,20 @@ class CUDACompiler(Compiler):
 				dimsBin = array('f', dims)
 				dataBin = array('f', linData)
 
-				f = open(workDir + "/" + fname, 'wb')
+				f = open(buildDir + "/" + fname, 'wb')
 				sizeBin.tofile(f)
 				dimsBin.tofile(f)
 				dataBin.tofile(f)
 				f.close()
 
 			#execute cuda code
-			#TODO
+			print("\n----- CUDA execution started -----\n")
+			process = subprocess.Popen([buildDir + "/run.exe"], cwd=buildDir)
+			process.wait()
+			print("\n----- CUDA execution ended -----\n")
 
 			for i, fname in enumerate(iog.outputList):
-				f = open(fname, 'r')
+				f = open(buildDir + "/" + fname, 'r')
 				rData = array('f')
 				rData.fromstring(f.read())
 				f.close()
@@ -208,7 +207,6 @@ class CUDACompiler(Compiler):
 				getSizes(output, sizes)
 				sizes.reverse()
 				
-				print(sizes)
 				shaped = np.reshape(data, sizes)
 
 				for i, item in enumerate(shaped):

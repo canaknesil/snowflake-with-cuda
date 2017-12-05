@@ -53,12 +53,6 @@ void StencilComponentN::evaluate(float **output, int *outputSize)
 	int *dims;
 
 	readIn(&input, &inputSize, &dims);
-	
-	cout << inputSize << endl;
-	for (int i=0; i<dim; i++) cout << dims[i] << " ";
-	cout << endl;
-	for (int i=0; i<inputSize; i++) cout << input[i] << " ";
-	cout << endl;
 
 	*outputSize = inputSize;
 	*output = new float[inputSize];
@@ -66,9 +60,6 @@ void StencilComponentN::evaluate(float **output, int *outputSize)
 	
 	//apply stencil
 	applyStencil(input, *output, dims, weights, wSizes, dim);
-	
-	for (int i=0; i<inputSize; i++) cout << (*output)[i] << " ";
-	cout << endl;
 }
 
 void StencilComponentN::readIn(float **arr, int *size, int **dims)
@@ -107,9 +98,8 @@ void StencilOpN::evaluate(float **output, int *size)
 	left->evaluate(&leftOut, size);
 	right->evaluate(&rightOut, size);
 
-	//TODO
 	*output = new float[*size];
-	for (int i=0; i<*size; i++) (*output)[i] = leftOut[i] + rightOut[i];
+	performOp(op, *output, leftOut, rightOut, *size);
 }
 
 
