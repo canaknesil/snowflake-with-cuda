@@ -3,10 +3,10 @@
 
 int main() {
 
-float component1__WEIGHTS__[] = {1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-float component2__WEIGHTS__[] = {0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111};
+float input__WEIGHTS__[] = {0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111, 0.111111111111};
+int input__WEIGHTS_SIZES__[] = {3, 3};
 
-Stencil("output", StencilOp(MUL, StencilComponent("component1", component1__WEIGHTS__, 3, 9), StencilComponent("component2", component2__WEIGHTS__, 3, 9)));
+Stencil("output", StencilComponent("input", input__WEIGHTS__, 2, 9, input__WEIGHTS_SIZES__));
 
 return 0;
 }

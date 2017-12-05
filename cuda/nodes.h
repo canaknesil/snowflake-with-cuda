@@ -31,7 +31,7 @@ StencilN *Stencil(string mesh, Node *body);
 class StencilComponentN : public Node
 {
 public:
-	StencilComponentN(string mesh, float *weights, int dim, int size);
+	StencilComponentN(string mesh, float *weights, int dim, int size, int *wSizes);
 	~StencilComponentN();
 
 	void evaluate(float **output, int *size);
@@ -41,11 +41,12 @@ private:
 	float *weights;
 	int dim;
 	int size;
+	int *wSizes;
 
-	void readIn(float **arr, int *size);
+	void readIn(float **arr, int *size, int **dims);
 };
 
-StencilComponentN *StencilComponent(string mesh, float *weights, int dim, int size);
+StencilComponentN *StencilComponent(string mesh, float *weights, int dim, int size, int *wSizes);
 
 
 #define ADD 0

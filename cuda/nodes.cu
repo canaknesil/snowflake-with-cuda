@@ -1,6 +1,7 @@
 
 #include "nodes.h"
 #include <iostream>
+#include "cst/MDStencil.h"
 
 using namespace std;
 
@@ -27,19 +28,20 @@ void StencilN::evaluate(float **dummyOutput, int *dummySize)
 }
 
 void StencilN::writeOut(float *arr, int size)
-{
-	//TODO
-	for (int i=0; i<size; i++) cout << arr[i] << " ";
-	cout << endl;
+{	
+	FILE *f = fopen(mesh.c_str(), "w");
+	fwrite(arr, sizeof(float), size, f);
+	fclose(f);
 }
 
 
-StencilComponentN::StencilComponentN(string mesh, float* weights, int dim, int size)
+StencilComponentN::StencilComponentN(string mesh, float* weights, int dim, int size, int *wSizes)
 {
 	this->mesh = mesh;
 	this->weights = weights;
 	this->dim = dim;
 	this->size = size;
+	this->wSizes = wSizes;
 }
 
 StencilComponentN::~StencilComponentN() {}
@@ -48,18 +50,44 @@ void StencilComponentN::evaluate(float **output, int *outputSize)
 {
 	float *input;
 	int inputSize;
+	int *dims;
 
-	readIn(&input, &inputSize);
+	readIn(&input, &inputSize, &dims);
+	
+	cout << inputSize << endl;
+	for (int i=0; i<dim; i++) cout << dims[i] << " ";
+	cout << endl;
+	for (int i=0; i<inputSize; i++) cout << input[i] << " ";
+	cout << endl;
 
-	//TODO
-	*output = new float[5];
-	for (int i=0; i<5; i++) (*output)[i] = i + 1;
-	*outputSize = 5;
+	*outputSize = inputSize;
+	*output = new float[inputSize];
+	for (int i=0; i<inputSize; i++) (*output)[i] = 0;
+	
+	//apply stencil
+	applyStencil(input, *output, dims, weights, wSizes, dim);
+	
+	for (int i=0; i<inputSize; i++) cout << (*output)[i] << " ";
+	cout << endl;
 }
 
-void StencilComponentN::readIn(float **arr, int *size)
+void StencilComponentN::readIn(float **arr, int *size, int **dims)
 {
-	//TODO
+	FILE *f = fopen(mesh.c_str(), "r");
+	
+	float fSize;
+	fread(&fSize, sizeof(float), 1, f);
+	*size = (int) fSize;
+	
+	float *fdims = new float[dim];
+	*dims = new int[dim];
+	fread(fdims, sizeof(float), dim, f);
+	for (int i=0; i<dim; i++) (*dims)[i] = (int) fdims[i];
+	
+	*arr = new float[*size];
+	fread(*arr, sizeof(float), *size, f);
+	
+	fclose(f);
 }
 
 
@@ -91,9 +119,9 @@ StencilN *Stencil(string mesh, Node *body)
 	return new StencilN(mesh, body);
 }
 
-StencilComponentN *StencilComponent(string mesh, float *weights, int dim, int size)
+StencilComponentN *StencilComponent(string mesh, float *weights, int dim, int size, int *wSizes)
 {
-	return new StencilComponentN(mesh, weights, dim, size);
+	return new StencilComponentN(mesh, weights, dim, size, wSizes);
 }
 
 StencilOpN *StencilOp(int op, Node *left, Node *right)

@@ -1,45 +1,52 @@
 
 #include <string>
 
+using namespace std;
+
 
 class Node
 {
 public:
-	void evaluate(float *output, int *size) = 0;
+	virtual void evaluate(float **output, int *size) = 0;
 };
 
 
-class Stencil : public Node
+class StencilN : public Node
 {
 public:
-	Stencil(string mesh, Node body);
-	~Stencil();
+	StencilN(string mesh, Node *body);
+	~StencilN();
 
 private:
 	string mesh;
-	Node body;
+	Node *body;
 
-	void evaluate(float *output, int *size);
+	void evaluate(float **output, int *size);
 	void writeOut(float *arr, int size);
 };
 
+StencilN *Stencil(string mesh, Node *body);
 
-class StencilComponent : public Node
+
+class StencilComponentN : public Node
 {
 public:
-	StencilComponent(string mesh, float *weights, int dim, int size);
-	~StencilComponent();
+	StencilComponentN(string mesh, float *weights, int dim, int size, int *wSizes);
+	~StencilComponentN();
 
-	void evaluate(float *output, int *size);
+	void evaluate(float **output, int *size);
 
 private:
 	string mesh;
 	float *weights;
 	int dim;
 	int size;
+	int *wSizes;
 
-	void readIn(float *arr, int *size);
+	void readIn(float **arr, int *size, int **dims);
 };
+
+StencilComponentN *StencilComponent(string mesh, float *weights, int dim, int size, int *wSizes);
 
 
 #define ADD 0
@@ -47,15 +54,21 @@ private:
 #define MUL 2
 #define DIV 3
 
-class StencilOp : public Node
+class StencilOpN : public Node
 {
 public:
-	StencilOp(int op, Node left, Node right);
-	~StencilOp();
+	StencilOpN(int op, Node *left, Node *right);
+	~StencilOpN();
 
-	void evaluate(float *output, int *size);
+	void evaluate(float **output, int *size);
 
 private:
 	int op;
-	Node left, right;
+	Node *left, *right;
 };
+
+StencilOpN *StencilOp(int op, Node *left, Node *right);
+
+
+
+

@@ -3,6 +3,7 @@
 #include <cmath>
 #include "MDArrayHelper.h"
 #include "MDUtils.h"
+#include "MDStencil.h"
 
 using namespace std;
 

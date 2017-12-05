@@ -1,81 +1,137 @@
 
 #include "nodes.h"
+#include <iostream>
+#include "cst/MDStencil.h"
+
+using namespace std;
 
 #define NULL 0
 
 
-Stencil::Stencil(string mesh, Node body)
+StencilN::StencilN(string mesh, Node *body)
 {
 	this->mesh = mesh;
 	this->body = body;
 	evaluate(NULL, NULL);
 }
 
-Stencil::~Stencil() {}
+StencilN::~StencilN() {}
 
-void Stencil::evaluate(float *output, int *size)
+void StencilN::evaluate(float **dummyOutput, int *dummySize)
 {
-	float *out;
+	float *output;
 	int size;
 
-	body.evaluate(out, &size);
+	body->evaluate(&output, &size);
 
-	writeOut(out, size);
+	writeOut(output, size);
 }
 
-void Stencil::writeOut(float *arr, int size)
+void StencilN::writeOut(float *arr, int size)
 {
 	//TODO
+	for (int i=0; i<size; i++) cout << arr[i] << " ";
+	cout << endl;
 }
 
 
-StencilComponent::StencilComponent(string mesh, float* weights, int dim, int size)
+StencilComponentN::StencilComponentN(string mesh, float* weights, int dim, int size, int *wSizes)
 {
 	this->mesh = mesh;
 	this->weights = weights;
 	this->dim = dim;
 	this->size = size;
+	this->wSizes = wSizes;
 }
 
-StencilComponent::~StencilComponent() {}
+StencilComponentN::~StencilComponentN() {}
 
-void StencilComponent::evaluate(float *output, int *outputSize)
+void StencilComponentN::evaluate(float **output, int *outputSize)
 {
 	float *input;
 	int inputSize;
+	int *dims;
 
-	readIn(input, &size);
+	readIn(&input, &inputSize, &dims);
+	
+	cout << inputSize << endl;
+	for (int i=0; i<dim; i++) cout << dims[i] << " ";
+	cout << endl;
+	for (int i=0; i<inputSize; i++) cout << input[i] << " ";
+	cout << endl;
 
-	//TODO
-	output = new float[5];
-	for (int i=0; i<5; i++) output[i] = i + 1;
-	*outputSize = 5;
+	*outputSize = inputSize;
+	*output = new float[inputSize];
+	for (int i=0; i<inputSize; i++) (*output)[i] = 0;
+	
+	//apply stencil
+	applyStencil(input, *output, dims, weights, wSizes, dim);
 }
 
-void StencilComponent::readIn(float *arr, int *size)
+void StencilComponentN::readIn(float **arr, int *size, int **dims)
 {
-	//TODO
+	FILE *f = fopen(mesh.c_str(), "r");
+	
+	float fSize;
+	fread(&fSize, sizeof(float), 1, f);
+	*size = (int) fSize;
+	
+	float *fdims = new float[dim];
+	*dims = new int[dim];
+	fread(fdims, sizeof(float), dim, f);
+	for (int i=0; i<dim; i++) (*dims)[i] = (int) fdims[i];
+	
+	*arr = new float[*size];
+	fread(*arr, sizeof(float), *size, f);
+	
+	fclose(f);
 }
 
 
-StencilOp::StencilOp(int op, Node left, Node right)
+StencilOpN::StencilOpN(int op, Node *left, Node *right)
 {
 	this->op = op;
 	this->left = left;
 	this->right = right;
 }
 
-StencilOp::~StencilOp() {}
+StencilOpN::~StencilOpN() {}
 
-void StencilOp::evaluate(float *output, int *size)
+void StencilOpN::evaluate(float **output, int *size)
 {
 	float *leftOut, *rightOut;
 	
-	left.evaluate(leftOut, size);
-	right.evaluate(rightOut, size);
+	left->evaluate(&leftOut, size);
+	right->evaluate(&rightOut, size);
 
 	//TODO
-	output = new float[*size];
-	for (int i=0; i<*size; i++) output[i] = leftOut[i] + rightOut[i];
+	*output = new float[*size];
+	for (int i=0; i<*size; i++) (*output)[i] = leftOut[i] + rightOut[i];
 }
+
+
+
+StencilN *Stencil(string mesh, Node *body)
+{
+	return new StencilN(mesh, body);
+}
+
+StencilComponentN *StencilComponent(string mesh, float *weights, int dim, int size, int *wSizes)
+{
+	return new StencilComponentN(mesh, weights, dim, size, wSizes);
+}
+
+StencilOpN *StencilOp(int op, Node *left, Node *right)
+{
+	return new StencilOpN(op, left, right);
+}
+
+
+
+
+
+
+
+
+
 

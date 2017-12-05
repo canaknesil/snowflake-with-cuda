@@ -103,4 +103,4 @@ def evaluateComplexStencil2():
 
 evaluateSimpleStencil()
 evaluateComplexStencil()
-#evaluateComplexStencil2()
+evaluateComplexStencil2()
