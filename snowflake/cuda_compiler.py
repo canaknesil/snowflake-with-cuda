@@ -156,15 +156,11 @@ class CUDACompiler(Compiler):
 
 			def flatten_helper(out, inp):
 
-				if len(inp) == 0:
-					return
-
-				if not isinstance(inp[0], Iterable):
-					out.append(inp[0])
+				if not isinstance(inp, Iterable):
+					out.append(inp)
 				else:
-					flatten_helper(out, inp[0])
-
-				flatten_helper(out, inp[1:])
+					for item in inp:
+						flatten_helper(out, item)
 
 			def flatten(inp):
 				out = []
@@ -195,7 +191,7 @@ class CUDACompiler(Compiler):
 			print("\n----- CUDA execution ended -----\n")
 
 			for i, fname in enumerate(iog.outputList):
-				f = open(buildDir + "/" + fname, 'r')
+				f = open(buildDir + "/" + fname, 'rb')
 				rData = array('f')
 				rData.fromstring(f.read())
 				f.close()

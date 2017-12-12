@@ -29,7 +29,7 @@ void StencilN::evaluate(float **dummyOutput, int *dummySize)
 
 void StencilN::writeOut(float *arr, int size)
 {	
-	FILE *f = fopen(mesh.c_str(), "w");
+	FILE *f = fopen(mesh.c_str(), "wb");
 	fwrite(arr, sizeof(float), size, f);
 	fclose(f);
 }
@@ -64,7 +64,7 @@ void StencilComponentN::evaluate(float **output, int *outputSize)
 
 void StencilComponentN::readIn(float **arr, int *size, int **dims)
 {
-	FILE *f = fopen(mesh.c_str(), "r");
+	FILE *f = fopen(mesh.c_str(), "rb");
 	
 	float fSize;
 	fread(&fSize, sizeof(float), 1, f);
