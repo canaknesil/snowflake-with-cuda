@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, '../../')
 
 from snowflake.nodes import Stencil, WeightArray, StencilComponent, RectangularDomain
-from snowflake.stencil_compiler import PythonCompiler
+from snowflake.stencil_compiler import PythonCompiler, CCompiler
 from snowflake.cuda_compiler import CUDACompiler
 
 import numpy as np
@@ -46,7 +46,7 @@ stencil = Stencil(
 )
 
 #compile
-compiler = CUDACompiler()
+compiler = CCompiler()
 kern = compiler.compile(stencil)
 
 #execute

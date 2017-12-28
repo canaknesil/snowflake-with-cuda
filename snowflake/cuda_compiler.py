@@ -185,10 +185,10 @@ class CUDACompiler(Compiler):
 				f.close()
 
 			#execute cuda code
-			print("\n----- CUDA execution started -----\n")
+			#print("\n----- CUDA execution started -----\n")
 			process = subprocess.Popen([buildDir + "/run.exe"], cwd=buildDir)
 			process.wait()
-			print("\n----- CUDA execution ended -----\n")
+			#print("\n----- CUDA execution ended -----\n")
 
 			for i, fname in enumerate(iog.outputList):
 				f = open(buildDir + "/" + fname, 'rb')
